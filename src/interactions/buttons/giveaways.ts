@@ -1,7 +1,9 @@
 import { ButtonInteraction } from 'discord.js';
 import { prismaDiscord } from '../../connectivity/prisma';
 
-export async function startGiveaway(data: ButtonInteraction) {}
+export async function startGiveaway(data: ButtonInteraction) {
+  return;
+}
 
 export async function deleteGiveaway(data: ButtonInteraction) {
   const [, giveaway_id] = data.message.embeds[0].footer.text.split(' : ');
@@ -52,6 +54,10 @@ export async function deleteGiveaway(data: ButtonInteraction) {
   });
 }
 
-export async function enterGiveaway(data: ButtonInteraction) {}
+export async function enterGiveaway(data: ButtonInteraction) {
+  return;
+}
 
-export async function leaveGiveaway(data: ButtonInteraction) {}
+export async function leaveGiveaway(data: ButtonInteraction) {
+  return;
+}

@@ -4,13 +4,16 @@ ARG NPM_CONFIG_USERCONFIG
 ARG NPM_TOKEN
 
 WORKDIR /app
-COPY prisma .npmrc.ci package*.json pnpm-lock.yaml ./
+COPY .npmrc.ci package*.json pnpm-lock.yaml ./
+COPY discord-db ./discord-db
+COPY db ./db
 
 RUN yarn global add pnpm
 RUN pnpm install
+RUN pnpm prisma
 
 COPY . .
-RUN yarn build
+RUN pnpm build
 
 FROM node:18
 
@@ -22,6 +25,7 @@ WORKDIR /app
 
 COPY --from=builder /app/node_modules node_modules
 COPY --from=builder /app/dist dist
+COPY --from=builder /app/generated generated
 COPY --from=builder /app/package.json ./
 
 ENTRYPOINT pnpm start

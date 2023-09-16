@@ -1,4 +1,4 @@
-import { users, accounts, connections, devices } from '@prisma/client';
+import { users, accounts, connections, devices } from '../generated/puff';
 
 import { env } from './env';
 import { APIResponse, LeaderboardEntry } from './types/Hash';
