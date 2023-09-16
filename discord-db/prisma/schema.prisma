@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../generated/discord"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DISCORD_DATABASE_URL")
+}
+
+model giveaways {
+  id          String   @id
+  name        String
+  description String?
+  ends        DateTime @db.Timestamp(6)
+  creator     String
+  boosts      Boolean  @default(false)
+  winners     Int      @default(1)
+  draft       Boolean  @default(true)
+}

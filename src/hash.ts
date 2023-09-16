@@ -1,0 +1,22 @@
+import { users, accounts, connections, devices } from '@prisma/client';
+
+import { env } from './env';
+import { APIResponse, LeaderboardEntry } from './types/Hash';
+import { stringify } from 'querystring';
+
+export async function getLeaderboards(limit = 10) {
+  const req = await fetch(`${env.HASH_API}/v1/leaderboard?limit=${limit}`).then((r) => r.json());
+  return req as APIResponse<{ leaderboards: LeaderboardEntry[] }>;
+}
+
+export async function getUsers(opts?: { limit?: number; all?: boolean }) {
+  const options = stringify(opts);
+  const req = await fetch(`${env.INTERNAL_HASH_API}/users${options ? `?${options}` : ''}`).then((r) => r.json());
+  return req as APIResponse<{
+    users: (users & {
+      devices: devices[];
+      accounts: accounts[];
+      connections: connections[];
+    })[];
+  }>;
+}
