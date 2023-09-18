@@ -49,7 +49,7 @@ export const DeviceDisplayButtons = {
 export const Roles = {
   Birthday: { role: '1112497816242229430', emoji: '' },
   Booster: { role: '1103957954992021545', emoji: '' },
-  Giveaways: { role: '1152733455159939254', emoji: '�' },
+  Giveaways: { role: '1152733455159939254', emoji: '💝' },
   SeshAlerts: { role: '1100653810935930951', emoji: '🌿' },
   SiteUpdates: { role: '1100653692983717940', emoji: '📝' },
   ServerAnnouncements: { role: '1103917695864410242', emoji: '📢' },
