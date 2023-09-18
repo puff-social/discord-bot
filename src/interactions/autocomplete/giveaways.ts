@@ -12,7 +12,7 @@ export async function giveawaysAutoComplete(data: AutocompleteInteraction) {
       const giveaways = await prismaDiscord.giveaways.findMany({
         where:
           data.options.getSubcommand() == 'reroll'
-            ? { ended: true, draft: false, ends: { gte: new Date(new Date().getTime() - 1 * 60 * 60 * 1000) } }
+            ? { ended: true, draft: false, ends: { gte: new Date(new Date().getTime() - 24 * 60 * 60 * 1000) } }
             : { ends: { gte: new Date() } },
       });
 
