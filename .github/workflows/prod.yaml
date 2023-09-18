@@ -26,6 +26,9 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/puff-social/discord-bot:latest,ghcr.io/puff-social/discord-bot:${{ github.sha }}
+          build-args: |
+            NPM_CONFIG_USERCONFIG=.npmrc.ci
+            NPM_TOKEN=${{ secrets.NPM_TOKEN }}
 
       # - uses: actions/checkout@master
       # - name: Deploy to cluster
