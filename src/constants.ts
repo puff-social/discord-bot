@@ -49,6 +49,7 @@ export const DeviceDisplayButtons = {
 export const Roles = {
   Birthday: { role: '1112497816242229430', emoji: '' },
   Booster: { role: '1103957954992021545', emoji: '' },
+  Giveaways: { role: '1152733455159939254', emoji: '�' },
   SeshAlerts: { role: '1100653810935930951', emoji: '🌿' },
   SiteUpdates: { role: '1100653692983717940', emoji: '📝' },
   ServerAnnouncements: { role: '1103917695864410242', emoji: '📢' },
@@ -130,5 +131,4 @@ export const Rules = [
   "7️⃣. Currently we're only able to moderate english, so only english is permitted in the chats.",
   "8️⃣. Don't ask for roles or permissions.",
   '9️⃣. Be courteous to users in the voice channels by not recording or live streaming them.\n*(Referring to external sources, not like discord live)*\n*(Certain channels may exist for this over time)*',
-  '🔟. Discord soundboards are great and all, but we ask that you turn off personalized entrance sounds for this server *(it can be controlled per server)*, failure to do so will result in being prohibited from using the soundboard here.',
 ];

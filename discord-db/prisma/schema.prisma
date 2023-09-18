@@ -17,4 +17,6 @@ model giveaways {
   boosts      Boolean  @default(false)
   winners     Int      @default(1)
   draft       Boolean  @default(true)
+  message_id  String?
+  ended       Boolean  @default(false)
 }

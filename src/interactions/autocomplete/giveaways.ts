@@ -3,9 +3,17 @@ import { prismaDiscord } from '../../connectivity/prisma';
 
 export async function giveawaysAutoComplete(data: AutocompleteInteraction) {
   switch (data.options.getSubcommand()) {
-    case 'info': {
+    case 'edit':
+    case 'delete':
+    case 'start':
+    case 'end':
+    case 'info':
+    case 'reroll': {
       const giveaways = await prismaDiscord.giveaways.findMany({
-        where: { ends: { gte: new Date() } },
+        where:
+          data.options.getSubcommand() == 'reroll'
+            ? { ended: true, draft: false, ends: { gte: new Date(new Date().getTime() - 1 * 60 * 60 * 1000) } }
+            : { ends: { gte: new Date() } },
       });
 
       const filtered = giveaways.filter((gv) => gv.name.startsWith(data.options.getString('id')));

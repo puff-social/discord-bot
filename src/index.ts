@@ -19,10 +19,10 @@ import { startVoiceChannelTimer, voiceChannelTimers } from './data';
 
 import './api';
 
-import { randomEntries } from './utils/random';
 import { updateMembersTicker } from './utils/tickers';
 import { incrementUserExperience } from './utils/experience';
 
+import './modules/giveaways';
 import { getRank } from './commands/ranks';
 import { seshCommand } from './commands/sesh';
 import { manageBirthday } from './commands/birthdays';
@@ -32,7 +32,7 @@ import { processInvites } from './modules/invites';
 import { processVoiceChannels } from './modules/voice';
 import { updateOrSendMessages } from './modules/system-messages';
 import { clearColorRoles, clearDisplayDeviceRole, colorRole, displayDeviceRole } from './interactions/buttons/roles';
-import { createGiveawayModal } from './interactions/modals/giveaways';
+import { createGiveawayModal, editGiveawayModal } from './interactions/modals/giveaways';
 import { deleteGiveaway, enterGiveaway, leaveGiveaway, startGiveaway } from './interactions/buttons/giveaways';
 import { giveawaysAutoComplete } from './interactions/autocomplete/giveaways';
 
@@ -196,8 +196,10 @@ client.on('interactionCreate', async (data) => {
       case 'device-role:puffco-pearl':
       case 'device-role:puffco-onyx':
         displayDeviceRole(data);
+        break;
       case 'device-role:none':
         clearDisplayDeviceRole(data);
+        break;
 
       case 'color-role:purple':
       case 'color-role:blue':
@@ -207,22 +209,36 @@ client.on('interactionCreate', async (data) => {
       case 'color-role:red':
       case 'color-role:brown':
         colorRole(data);
+        break;
       case 'color-role:none':
         clearColorRoles(data);
+        break;
 
       case 'giveaway-create:start':
         startGiveaway(data);
+        break;
+      case 'giveaway-create:start-announce':
+        startGiveaway(data, true);
+        break;
       case 'giveaway-create:delete':
         deleteGiveaway(data);
+        break;
       case 'giveaway-event:enter':
         enterGiveaway(data);
-      case 'giveaway-already-entered:enter':
+        break;
+      case 'giveaway-already-entered:leave':
         leaveGiveaway(data);
+        break;
     }
   } else if (data instanceof ModalSubmitInteraction) {
-    switch (data.customId) {
+    switch (data.customId.split(':')[0]) {
       case 'create_giveaway':
         createGiveawayModal(data);
+        break;
+
+      case 'edit_giveaway':
+        editGiveawayModal(data);
+        break;
     }
   } else if (data instanceof CommandInteraction) {
     switch (data.commandName) {
