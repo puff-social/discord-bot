@@ -8,7 +8,7 @@ export async function processDeviceRoles() {
   try {
     const {
       data: { users },
-    } = await getUsers();
+    } = await getUsers({ all: true });
 
     for (const user of users) {
       const discordConnection = user.connections.find((connection) => connection.platform == 'discord');

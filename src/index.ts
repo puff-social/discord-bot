@@ -245,16 +245,21 @@ client.on('interactionCreate', async (data) => {
       case 'sesh':
       case 'smoke':
         seshCommand(data);
+        break;
       case 'rank':
         getRank(data);
+        break;
       case 'birthday':
         manageBirthday(data as ChatInputCommandInteraction);
+        break;
 
       case 'firmware':
         firmwareGroup(data as ChatInputCommandInteraction);
+        break;
 
       case 'giveaways':
         manageGiveaways(data as ChatInputCommandInteraction);
+        break;
     }
   } else if (data instanceof AutocompleteInteraction) {
     switch (data.commandName) {
