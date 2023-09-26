@@ -30,15 +30,15 @@ jobs:
             NPM_CONFIG_USERCONFIG=.npmrc.ci
             NPM_TOKEN=${{ secrets.NPM_TOKEN }}
 
-      # - uses: actions/checkout@master
-      # - name: Deploy to cluster
-      #   uses: danielr1996/kubectl-action@1.0.0
-      #   with:
-      #     kubeconfig: ${{ secrets.KUBECONFIG }}
-      #     args: set image --record deployment/puffsocial-bot app=ghcr.io/puff-social/discord-bot:${{ github.sha }}
+      - uses: actions/checkout@master
+      - name: Deploy to cluster
+        uses: danielr1996/kubectl-action@1.0.0
+        with:
+          kubeconfig: ${{ secrets.PROD_KUBECONFIG }}
+          args: set image --record deployment/bot -n puff app=ghcr.io/${{ github.repository }}:${{ github.sha }}
 
-      # - name: Verify deployment
-      #   uses: danielr1996/kubectl-action@1.0.0
-      #   with:
-      #     kubeconfig: ${{ secrets.KUBECONFIG }}
-      #     args: rollout status deployment/puffsocial-bot
+      - name: Verify deployment
+        uses: danielr1996/kubectl-action@1.0.0
+        with:
+          kubeconfig: ${{ secrets.PROD_KUBECONFIG }}
+          args: rollout status deployment/bot -n puff
