@@ -150,6 +150,7 @@ client.on('interactionCreate', async (data) => {
       case 'device-role:puffco-guardian':
       case 'device-role:puffco-pearl':
       case 'device-role:puffco-onyx':
+      case 'device-role:puffco-desert':
         displayDeviceRole(data);
         break;
       case 'device-role:none':
