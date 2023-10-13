@@ -1,15 +1,3 @@
-export const ProductModelMap = {
-  '0': { name: 'Peak', emoji: '<:peak:1090799054428065894>', role: '1091533760119443536' },
-  '21': { name: 'Peak', emoji: '<:peak:1090799054428065894>', role: '1091533760119443536' },
-  '4294967295': { name: 'Peak', emoji: '<:peak:1090799054428065894>', role: '1091533760119443536' },
-  '1': { name: 'Opal', emoji: '<:opal:1090799053220089878>', role: '1091534067410935838' },
-  '22': { name: 'Opal', emoji: '<:opal:1090799053220089878>', role: '1091534067410935838' },
-  '2': { name: 'Indiglow', emoji: '<:indiglow:1090799052247027792>', role: '1091533939534999572' },
-  '4': { name: 'Guardian', emoji: '<:guardian:1090799049894015050>', role: '1091534018207551601' },
-  '12': { name: 'Pearl', emoji: '<:pearl:1115367284316319754>', role: '1115370363778515027' },
-  '13': { name: 'Onyx', emoji: '<:onyx:1115367196781203578>', role: '1115370368731987990' },
-};
-
 export const AllowedRolesMap: Record<string, { role: string; name: string }> = {
   '1109581279097258065': { role: '1091533760119443536', name: 'Peak Pro' },
   '1109581295660568666': { role: '1091534067410935838', name: 'Opal' },
@@ -17,6 +5,7 @@ export const AllowedRolesMap: Record<string, { role: string; name: string }> = {
   '1109581291109748817': { role: '1091534018207551601', name: 'Guardian' },
   '1115372397361635479': { role: '1115370363778515027', name: 'Pearl' },
   '1115372382786441277': { role: '1115370368731987990', name: 'Onyx' },
+  '1162214735798866001': { role: '1162214606379417730', name: 'Desert' },
 };
 
 export const DeviceRoleColorMap: Record<string, number> = {
@@ -26,6 +15,7 @@ export const DeviceRoleColorMap: Record<string, number> = {
   '1109581291109748817': 0xc0c1c7,
   '1115372397361635479': 0xe8e7eb,
   '1115372382786441277': 0x4d4e54,
+  '1162214735798866001': 0x4d4e54,
 };
 
 export const DisplayDeviceRolesMap = {
@@ -35,6 +25,7 @@ export const DisplayDeviceRolesMap = {
   'puffco-guardian': '1109581291109748817',
   'puffco-onyx': '1115372382786441277',
   'puffco-pearl': '1115372397361635479',
+  'puffco-desert': '1162214735798866001',
 };
 
 export const DeviceDisplayButtons = {
@@ -44,6 +35,24 @@ export const DeviceDisplayButtons = {
   guardian: { name: 'Guardian', emoji: { name: 'guardian', id: '1090799049894015050' }, action: 'puffco-guardian' },
   pearl: { name: 'Pearl', emoji: { name: 'pearl', id: '1115367284316319754' }, action: 'puffco-pearl' },
   onyx: { name: 'Onyx', emoji: { name: 'onyx', id: '1115367196781203578' }, action: 'puffco-onyx' },
+  desert: { name: 'Desert', emoji: { name: 'desert', id: '1162214566831333376' }, action: 'puffco-desert' },
+};
+
+export const ProductModelMap = {
+  '0': { name: 'Peak', emoji: `<:peak:${DeviceDisplayButtons.peak.emoji.id}>`, role: '1091533760119443536' },
+  '21': { name: 'Peak', emoji: `<:peak:${DeviceDisplayButtons.peak.emoji.id}>`, role: '1091533760119443536' },
+  '4294967295': { name: 'Peak', emoji: `<:peak:${DeviceDisplayButtons.peak.emoji.id}>`, role: '1091533760119443536' },
+  '1': { name: 'Opal', emoji: `<:opal:${DeviceDisplayButtons.opal.emoji.id}>`, role: '1091534067410935838' },
+  '22': { name: 'Opal', emoji: `<:opal:${DeviceDisplayButtons.opal.emoji.id}>`, role: '1091534067410935838' },
+  '2': { name: 'Indiglow', emoji: `<:indiglow:${DeviceDisplayButtons.indiglow.emoji.id}>`, role: '1091533939534999572' },
+  '4': { name: 'Guardian', emoji: `<:guardian:${DeviceDisplayButtons.guardian.emoji.id}>`, role: '1091534018207551601' },
+  '13': { name: 'Onyx', emoji: `<:onyx:${DeviceDisplayButtons.onyx.emoji.id}>`, role: '1115370368731987990' },
+  '12': { name: 'Pearl', emoji: `<:pearl:${DeviceDisplayButtons.pearl.emoji.id}>`, role: '1115370363778515027' },
+  '51': { name: 'Peak', emoji: `<:peak:${DeviceDisplayButtons.peak.emoji.id}>`, role: '1091533760119443536' },
+  '71': { name: 'Onyx', emoji: `<:onyx:${DeviceDisplayButtons.onyx.emoji.id}>`, role: '1115370368731987990' },
+  '72': { name: 'Pearl', emoji: `<:pearl:${DeviceDisplayButtons.pearl.emoji.id}>`, role: '1115370363778515027' },
+  '15': { name: 'Desert', emoji: `<:desert:${DeviceDisplayButtons.desert.emoji.id}>`, role: '1162214606379417730' },
+  '74': { name: 'Desert', emoji: `<:desert:${DeviceDisplayButtons.desert.emoji.id}>`, role: '1162214606379417730' },
 };
 
 export const Roles = {

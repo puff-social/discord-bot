@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@prisma/client': 4.14.1
-  '@puff-social/commons': ^1.0.3
+  '@puff-social/commons': ^1.0.30
   '@types/node': ^18.0.4
   '@types/ws': ^8.5.3
   discord.js: ^14.13.0
@@ -20,7 +20,7 @@ specifiers:
 
 dependencies:
   '@prisma/client': 4.14.1_prisma@4.14.1
-  '@puff-social/commons': 1.0.3_prisma@4.14.1
+  '@puff-social/commons': 1.0.30_prisma@4.14.1
   discord.js: 14.13.0
   envsafe: 2.0.3
   fastify: 4.17.0
@@ -188,8 +188,8 @@ packages:
     resolution: {integrity: sha512-APqFddPVHYmWNKqc+5J5SqrLFfOghKOLZxobmguDUacxOwdEutLsbXPVhNnpFDmuQWQFbXmrTTPoRrrF6B1MWA==}
     requiresBuild: true
 
-  /@puff-social/commons/1.0.3_prisma@4.14.1:
-    resolution: {integrity: sha512-biUtl4x3xrJYnyl6W+4B7IJPqyLVpLX5poBQH5DWVniH7XWZmXXROgaGHCXO80gulPVhk1PL8+Xn9Usns8SoAw==, tarball: download/@puff-social/commons/1.0.3/679c4a7a5c475ddcfdd0523a7a299b1353f679e2}
+  /@puff-social/commons/1.0.30_prisma@4.14.1:
+    resolution: {integrity: sha512-uX8zfhF/kok8V6Muw/oR+NeIS3G31Q1e3jbBu/39yq6r+zlRQAWVpCqcddEcyaLUxqsD5KadVn1ZRpNEBCE2qw==, tarball: download/@puff-social/commons/1.0.30/c1de56347cb4745a53b17d10b042bc7a43a50bf3}
     dependencies:
       '@prisma/client': 4.14.0_prisma@4.14.1
       envsafe: 2.0.3

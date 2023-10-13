@@ -12,7 +12,7 @@ import {
   AutocompleteInteraction,
 } from 'discord.js';
 
-import { Roles, SubscriptionRoles } from './constants';
+import { Roles } from './constants';
 import { env } from './env';
 import { prisma } from './connectivity/prisma';
 import { startVoiceChannelTimer, voiceChannelTimers } from './data';
@@ -104,51 +104,6 @@ client.on('guildMemberAdd', async (member) => {
       await keydb.set(`discord/invite/${used.code}/used-by/${member.user.id}`, new Date().getTime());
     }
   }
-});
-
-client.on('guildMemberUpdate', async (old, updated) => {
-  if (env.NODE_ENV == 'production')
-    for (const { role, subscription } of [...Object.values(SubscriptionRoles)]) {
-      if (old.roles.resolve(role) && !updated.roles.resolve(role)) {
-        const user = await prisma.users.findFirst({
-          include: {
-            connections: true,
-          },
-          where: {
-            connections: {
-              some: {
-                platform_id: updated.id,
-              },
-            },
-          },
-        });
-
-        if (!user) continue;
-
-        const exists = await prisma.discord_subscriptions.findFirst({
-          where: {
-            platform_id: updated.id,
-            user_id: user.id,
-            subscription_id: subscription,
-          },
-        });
-
-        if (!exists) continue;
-
-        await prisma.discord_subscriptions.update({
-          where: {
-            user_id_subscription_id_platform_id: {
-              platform_id: updated.id,
-              user_id: user.id,
-              subscription_id: subscription,
-            },
-          },
-          data: {
-            active: false,
-          },
-        });
-      }
-    }
 });
 
 if (env.NODE_ENV == 'production')
