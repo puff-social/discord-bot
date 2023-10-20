@@ -20,6 +20,9 @@ export function startVoiceChannelTimer(voice: VoiceBasedChannel, user: string) {
     // Also make sure the channel is a public voice channel (has permissions to Connect, Speak and speak without PTT)
     // Then increment the XP
 
+    // Keep track of how much xp the user got in that session
+    // Keep track of the join time and when we delete the timer send in the voice logs
+
     if (
       voice.members.size > 1 &&
       !voice.members.find((mem) => mem.id == user).voice.mute &&

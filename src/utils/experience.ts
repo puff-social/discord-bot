@@ -103,3 +103,7 @@ export async function incrementUserExperience(id: string, amount = 1) {
     if (rankRole?.id != previousRankRole?.id) await member.roles.remove(previousRankRole.id);
   }
 }
+
+export async function incrementSessionExperience(id: string, amount = 1) {
+  await keydb.set(`discord/experience/${id}/session`, new Date().getTime().toString(), 'EX', 60);
+}
