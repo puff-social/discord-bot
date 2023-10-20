@@ -24,7 +24,7 @@ export function calculateLevel(xp: number) {
   return level - 1;
 }
 
-export async function incrementUserExperience(id: string, amount = 1) {
+export async function incrementUserExperience(id: string, amount = 1, message = false) {
   const user = await prisma.discord_users.findFirst({ where: { id } });
 
   const lastGiven = await keydb.get(`discord/experience/${id}/last`);
@@ -35,9 +35,6 @@ export async function incrementUserExperience(id: string, amount = 1) {
     update: {
       xp: {
         increment: amount,
-      },
-      messages: {
-        increment: 1,
       },
     },
     create: {

@@ -233,6 +233,19 @@ if (env.NODE_ENV == 'production')
       const xpToAdd = Math.floor(Math.random() * (attachment ? 14 : 7)) + (attachment ? 16 : 8);
 
       if (msg.channel.permissionsFor(msg.guild.id).has(PermissionFlagsBits.ViewChannel)) {
+        await prisma.discord_users.upsert({
+          where: { id: msg.author.id },
+          update: {
+            messages: {
+              increment: 1,
+            },
+          },
+          create: {
+            id: msg.author.id,
+            messages: 1,
+          },
+        });
+
         const lastMessage = await msg.channel.messages.fetch({ limit: 2, cache: false });
         const lastUserMessage = lastMessage.filter((m) => m.author.id === msg.author.id).last();
 
