@@ -11,8 +11,14 @@ export function startVoiceChannelTimer(voice: VoiceBasedChannel, user: string) {
       clearInterval(timer);
       if (activityTimer) clearInterval(activityTimer);
       voiceChannelTimers.delete(user);
+
       return;
     }
+
+    // Make sure the voice channel has more than one person
+    // Make sure the user is not muted or deafen (or server muted/defeaned)
+    // Also make sure the channel is a public voice channel (has permissions to Connect, Speak and speak without PTT)
+    // Then increment the XP
 
     if (
       voice.members.size > 1 &&
@@ -31,16 +37,25 @@ export function startVoiceChannelTimer(voice: VoiceBasedChannel, user: string) {
   }, 10 * 60 * 1000);
 
   const activityTimer = setInterval(async () => {
-    await prisma.discord_users.upsert({
-      where: { id: user },
-      update: {
-        ...(voice.members.size > 1 ? { vc_time: { increment: 10 } } : { vc_time_alone: { increment: 10 } }),
-      },
-      create: {
-        id: user,
-        ...(voice.members.size > 1 ? { vc_time: 10 } : { vc_time_alone: 10 }),
-      },
-    });
+    if (
+      !voice.members.find((mem) => mem.id == user).voice.mute &&
+      !voice.members.find((mem) => mem.id == user).voice.deaf &&
+      !voice.members.find((mem) => mem.id == user).voice.serverMute &&
+      !voice.members.find((mem) => mem.id == user).voice.serverDeaf &&
+      voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.Connect) &&
+      voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.UseVAD) &&
+      voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.Speak)
+    )
+      await prisma.discord_users.upsert({
+        where: { id: user },
+        update: {
+          ...(voice.members.size > 1 ? { vc_time: { increment: 10 } } : { vc_time_alone: { increment: 10 } }),
+        },
+        create: {
+          id: user,
+          ...(voice.members.size > 1 ? { vc_time: 10 } : { vc_time_alone: 10 }),
+        },
+      });
   }, 10 * 1000);
 
   voiceChannelTimers.set(user, [timer, activityTimer]);

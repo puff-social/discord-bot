@@ -87,6 +87,7 @@ export const Channels = {
   RanksNBots: '1110744300662296597',
   RigShowcase: '1111547333537173544',
   FirmwareUpdates: '1121643313209032734',
+  VoiceLogs: '1165028178671181946',
 };
 
 export const NumberEmojis = {
