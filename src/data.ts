@@ -25,10 +25,10 @@ export function startVoiceChannelTimer(voice: VoiceBasedChannel, user: string) {
 
     if (
       voice.members.size > 1 &&
-      !voice.members.find((mem) => mem.id == user).voice.mute &&
-      !voice.members.find((mem) => mem.id == user).voice.deaf &&
-      !voice.members.find((mem) => mem.id == user).voice.serverMute &&
-      !voice.members.find((mem) => mem.id == user).voice.serverDeaf &&
+      !voice.members.find((mem) => mem.id == user)?.voice.mute &&
+      !voice.members.find((mem) => mem.id == user)?.voice.deaf &&
+      !voice.members.find((mem) => mem.id == user)?.voice.serverMute &&
+      !voice.members.find((mem) => mem.id == user)?.voice.serverDeaf &&
       voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.Connect) &&
       voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.UseVAD) &&
       voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.Speak)
@@ -41,10 +41,10 @@ export function startVoiceChannelTimer(voice: VoiceBasedChannel, user: string) {
 
   const activityTimer = setInterval(async () => {
     if (
-      !voice.members.find((mem) => mem.id == user).voice.mute &&
-      !voice.members.find((mem) => mem.id == user).voice.deaf &&
-      !voice.members.find((mem) => mem.id == user).voice.serverMute &&
-      !voice.members.find((mem) => mem.id == user).voice.serverDeaf &&
+      !voice.members.find((mem) => mem.id == user)?.voice.mute &&
+      !voice.members.find((mem) => mem.id == user)?.voice.deaf &&
+      !voice.members.find((mem) => mem.id == user)?.voice.serverMute &&
+      !voice.members.find((mem) => mem.id == user)?.voice.serverDeaf &&
       voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.Connect) &&
       voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.UseVAD) &&
       voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.Speak)
