@@ -90,6 +90,28 @@ export const Channels = {
   VoiceLogs: '1165028178671181946',
 };
 
+export const VoiceTextChannels = {
+  VCText: '1101008224108433428',
+  GamingText: '1168273939903037491',
+  PenthouseText: '1168274007322275890',
+};
+
+export const VoiceChannels = {
+  General: '479770647254532099',
+  SeshLive: '1133468595624612051',
+  SeshCircle: '479770514597085204',
+  GamingLounge: '1135327888216969276',
+  Penthouse: '1099607402657087569',
+};
+
+export const VoiceToText = {
+  [VoiceChannels.General]: VoiceTextChannels.VCText,
+  [VoiceChannels.SeshLive]: VoiceTextChannels.VCText,
+  [VoiceChannels.SeshCircle]: VoiceTextChannels.VCText,
+  [VoiceChannels.GamingLounge]: VoiceTextChannels.GamingText,
+  [VoiceChannels.Penthouse]: VoiceTextChannels.PenthouseText,
+};
+
 export const NumberEmojis = {
   1: '1️⃣',
   2: '2️⃣',

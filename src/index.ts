@@ -35,6 +35,7 @@ import { clearColorRoles, clearDisplayDeviceRole, colorRole, displayDeviceRole }
 import { createGiveawayModal, editGiveawayModal } from './interactions/modals/giveaways';
 import { deleteGiveaway, enterGiveaway, leaveGiveaway, startGiveaway } from './interactions/buttons/giveaways';
 import { giveawaysAutoComplete } from './interactions/autocomplete/giveaways';
+import { changeVoiceText } from './helpers/voice';
 
 export const client = new Client({
   intents:
@@ -310,6 +311,8 @@ if (env.NODE_ENV == 'production')
 if (env.NODE_ENV == 'production')
   client.on('voiceStateUpdate', async (oldState, newState) => {
     if (newState.member?.user.bot) return;
+
+    if (oldState.channel != newState.channel) await changeVoiceText(newState.channel?.id, newState.member.user.id);
 
     if (oldState.channel != newState.channel && newState.channel) {
       await keydb.set(`discord/${newState.member.id}/voice`, newState.channel.id);
