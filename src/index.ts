@@ -312,7 +312,7 @@ if (env.NODE_ENV == 'production')
   client.on('voiceStateUpdate', async (oldState, newState) => {
     if (newState.member?.user.bot) return;
 
-    if (oldState.channel != newState.channel) await changeVoiceText(newState.channel?.id, newState.member.user.id);
+    if (oldState.channel != newState.channel) changeVoiceText(newState.channel?.id, newState.member.user.id);
 
     if (oldState.channel != newState.channel && newState.channel) {
       await keydb.set(`discord/${newState.member.id}/voice`, newState.channel.id);
