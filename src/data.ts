@@ -6,6 +6,28 @@ import { incrementUserExperience } from './utils/experience';
 export const voiceChannelTimers = new Map<string, NodeJS.Timeout[]>();
 
 export function startVoiceChannelTimer(voice: VoiceBasedChannel, user: string) {
+  const activityTimer = setInterval(async () => {
+    if (
+      !voice.members.find((mem) => mem.id == user)?.voice.mute &&
+      !voice.members.find((mem) => mem.id == user)?.voice.deaf &&
+      !voice.members.find((mem) => mem.id == user)?.voice.serverMute &&
+      !voice.members.find((mem) => mem.id == user)?.voice.serverDeaf &&
+      voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.Connect) &&
+      voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.UseVAD) &&
+      voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.Speak)
+    )
+      await prisma.discord_users.upsert({
+        where: { id: user },
+        update: {
+          ...(voice.members.size > 1 ? { vc_time: { increment: 10 } } : { vc_time_alone: { increment: 10 } }),
+        },
+        create: {
+          id: user,
+          ...(voice.members.size > 1 ? { vc_time: 10 } : { vc_time_alone: 10 }),
+        },
+      });
+  }, 10 * 1000);
+
   const timer = setInterval(async () => {
     if (!voice || !voice.members.find((mem) => mem.id == user)) {
       console.log('DEBUG: stopping voice timer for', user, 'due to missing channel or channel member');
@@ -40,27 +62,6 @@ export function startVoiceChannelTimer(voice: VoiceBasedChannel, user: string) {
     }
   }, 10 * 60 * 1000);
 
-  const activityTimer = setInterval(async () => {
-    if (
-      !voice.members.find((mem) => mem.id == user)?.voice.mute &&
-      !voice.members.find((mem) => mem.id == user)?.voice.deaf &&
-      !voice.members.find((mem) => mem.id == user)?.voice.serverMute &&
-      !voice.members.find((mem) => mem.id == user)?.voice.serverDeaf &&
-      voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.Connect) &&
-      voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.UseVAD) &&
-      voice.permissionsFor(voice.guild.id).has(PermissionFlagsBits.Speak)
-    )
-      await prisma.discord_users.upsert({
-        where: { id: user },
-        update: {
-          ...(voice.members.size > 1 ? { vc_time: { increment: 10 } } : { vc_time_alone: { increment: 10 } }),
-        },
-        create: {
-          id: user,
-          ...(voice.members.size > 1 ? { vc_time: 10 } : { vc_time_alone: 10 }),
-        },
-      });
-  }, 10 * 1000);
 
   voiceChannelTimers.set(user, [timer, activityTimer]);
 }
