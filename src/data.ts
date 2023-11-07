@@ -7,7 +7,8 @@ export const voiceChannelTimers = new Map<string, NodeJS.Timeout[]>();
 
 export function startVoiceChannelTimer(voice: VoiceBasedChannel, user: string) {
   const timer = setInterval(async () => {
-    if (!voice) {
+    if (!voice || !voice.members.find((mem) => mem.id == user)) {
+      console.log('DEBUG: stopping voice timer for', user, 'due to missing channel or channel member');
       clearInterval(timer);
       if (activityTimer) clearInterval(activityTimer);
       voiceChannelTimers.delete(user);
