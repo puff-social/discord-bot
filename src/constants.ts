@@ -1,3 +1,5 @@
+import { DeviceModelColors } from '@puff-social/commons/dist/puffco';
+
 export const AllowedRolesMap: Record<string, { role: string; name: string }> = {
   '1109581279097258065': { role: '1091533760119443536', name: 'Peak Pro' },
   '1109581295660568666': { role: '1091534067410935838', name: 'Opal' },
@@ -9,13 +11,13 @@ export const AllowedRolesMap: Record<string, { role: string; name: string }> = {
 };
 
 export const DeviceRoleColorMap: Record<string, number> = {
-  '1109581279097258065': 0x4d4e54,
-  '1109581295660568666': 0xe8e7eb,
-  '1109581287787864075': 0x6e65bf,
-  '1109581291109748817': 0xc0c1c7,
-  '1115372397361635479': 0xe8e7eb,
-  '1115372382786441277': 0x4d4e54,
-  '1162214735798866001': 0x4d4e54,
+  '1109581279097258065': parseInt(DeviceModelColors.Peak.slice(1), 16),
+  '1109581295660568666': parseInt(DeviceModelColors.Opal.slice(1), 16),
+  '1109581287787864075': parseInt(DeviceModelColors.Indiglow.slice(1), 16),
+  '1109581291109748817': parseInt(DeviceModelColors.Guardian.slice(1), 16),
+  '1115372397361635479': parseInt(DeviceModelColors.PeachWhite.slice(1), 16),
+  '1115372382786441277': parseInt(DeviceModelColors.PeachBlack.slice(1), 16),
+  '1162214735798866001': parseInt(DeviceModelColors.Desert.slice(1), 16),
 };
 
 export const DisplayDeviceRolesMap = {
