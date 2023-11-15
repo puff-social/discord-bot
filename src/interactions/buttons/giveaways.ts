@@ -1,5 +1,12 @@
 import { keydb } from '@puff-social/commons/dist/connectivity/keydb';
-import { ButtonInteraction, ButtonStyle, ComponentType, NewsChannel } from 'discord.js';
+import {
+  ButtonComponent,
+  ButtonInteraction,
+  ButtonStyle,
+  ComponentType,
+  MessageActionRowComponent,
+  NewsChannel,
+} from 'discord.js';
 
 import { prismaDiscord } from '../../connectivity/prisma';
 import { processGiveaways } from '../../modules/giveaways';
@@ -81,6 +88,7 @@ export async function startGiveaway(data: ButtonInteraction, announce = false) {
           {
             custom_id: 'giveaway-event:enter',
             emoji: { name: '💝' },
+            label: '0',
             style: ButtonStyle.Primary,
             type: ComponentType.Button,
           },
@@ -91,6 +99,7 @@ export async function startGiveaway(data: ButtonInteraction, announce = false) {
       {
         title: giveaway.name,
         description: giveaway.description,
+        ...(giveaway.header_image ? { image: {url: giveaway.header_image} } : {}),
         color: 0xebc1de,
         footer: { text: `puff.social giveaways - ID: ${giveaway.id}` },
         fields: [
@@ -296,7 +305,20 @@ export async function enterGiveaway(data: ButtonInteraction) {
     const field = message.embeds[0].fields.find((field) => field.name == 'Entries');
     if (field) field.value = keys.length.toLocaleString();
 
-    await message.edit({ embeds: message.embeds, components: message.components });
+    await message.edit({ embeds: message.embeds, components: [
+      {
+        type: ComponentType.ActionRow,
+        components: [
+          {
+            custom_id: 'giveaway-event:enter',
+            emoji: { name: '💝' },
+            label: keys.length.toLocaleString(),
+            style: ButtonStyle.Primary,
+            type: ComponentType.Button,
+          },
+          ],
+      },
+      ] });
   }
 
   data.deferUpdate();
@@ -377,7 +399,20 @@ export async function leaveGiveaway(data: ButtonInteraction) {
     const field = message.embeds[0].fields.find((field) => field.name == 'Entries');
     if (field) field.value = keys.length.toLocaleString();
 
-    await message.edit({ embeds: message.embeds, components: message.components });
+    await message.edit({ embeds: message.embeds, components: [
+      {
+        type: ComponentType.ActionRow,
+        components: [
+          {
+            custom_id: 'giveaway-event:enter',
+            emoji: { name: '💝' },
+            label: keys.length.toLocaleString(),
+            style: ButtonStyle.Primary,
+            type: ComponentType.Button,
+          },
+          ],
+      },
+      ] });
   }
 
   data.deferUpdate();

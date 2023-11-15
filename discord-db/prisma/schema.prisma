@@ -9,14 +9,15 @@ datasource db {
 }
 
 model giveaways {
-  id          String   @id
-  name        String
-  description String?
-  ends        DateTime @db.Timestamp(6)
-  creator     String
-  boosts      Boolean  @default(false)
-  winners     Int      @default(1)
-  draft       Boolean  @default(true)
-  message_id  String?
-  ended       Boolean  @default(false)
+  id           String   @id
+  name         String
+  description  String?
+  ends         DateTime @db.Timestamp(6)
+  creator      String
+  boosts       Boolean  @default(false)
+  winners      Int      @default(1)
+  draft        Boolean  @default(true)
+  message_id   String?
+  ended        Boolean  @default(false)
+  header_image String?
 }

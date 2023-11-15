@@ -9,6 +9,7 @@ import { polledGiveaways, processGiveaways } from '../../modules/giveaways';
 
 export async function createGiveawayModal(data: ModalSubmitInteraction) {
   const name = data.fields.getTextInputValue('name');
+  const header_image = data.fields.getTextInputValue('header');
   const description = data.fields.getTextInputValue('description');
   const winners = Number(data.fields.getTextInputValue('winners'));
   const duration = data.fields.getTextInputValue('duration').toLowerCase();
@@ -57,6 +58,7 @@ export async function createGiveawayModal(data: ModalSubmitInteraction) {
     winners,
     creator: data.user.id,
     ends: formattedDuration,
+    header_image
   };
 
   await prismaDiscord.giveaways.create({

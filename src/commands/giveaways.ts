@@ -28,6 +28,18 @@ export async function manageGiveaways(data: ChatInputCommandInteraction) {
             components: [
               {
                 type: ComponentType.TextInput,
+                custom_id: 'header',
+                label: 'Header Image (Optional)',
+                required: false,
+                style: TextInputStyle.Short,
+              },
+            ],
+          },
+          {
+            type: 1,
+            components: [
+              {
+                type: ComponentType.TextInput,
                 custom_id: 'duration',
                 label: 'Duration (e.g 7 days, 2 weeks, 24h, 2d12h)',
                 required: true,

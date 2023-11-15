@@ -53,7 +53,7 @@ client.on('ready', async () => {
   console.log(`Discord > Connected as ${client.user.username}`);
 
   const guild = await client.guilds.fetch(env.WATCH_GUILD);
-  if (!guild || env.NODE_ENV != 'production') return;
+  if (!guild) return;
 
   setInterval(updateMembersTicker, 300_000);
   updateMembersTicker();
@@ -107,42 +107,38 @@ client.on('guildMemberAdd', async (member) => {
   }
 });
 
-if (env.NODE_ENV == 'production')
-  client.on('messageReactionAdd', async (data, reactor) => {
-    (async () => {
-      if (data.message.attachments.size > 0 && reactor.id != data.message.author.id) {
-        const users = (await data.users.fetch()).filter((usr) => usr.id != data.message.author.id);
-        if (!(data.message.channel instanceof TextChannel)) return;
-        const alreadyInteracted = await keydb.get(`discord/reaction_messages/${data.message.id}`);
+client.on('messageReactionAdd', async (data, reactor) => {
+  (async () => {
+    if (data.message.attachments.size > 0 && reactor.id != data.message.author.id) {
+      const users = (await data.users.fetch()).filter((usr) => usr.id != data.message.author.id);
+      if (!(data.message.channel instanceof TextChannel)) return;
+      const alreadyInteracted = await keydb.get(`discord/reaction_messages/${data.message.id}`);
 
-        if (users.size > 0 && !alreadyInteracted && data.message.channel.permissionsFor(data.message.guild.id).has(PermissionFlagsBits.ViewChannel)) {
-          await keydb.set(`discord/reaction_messages/${data.message.id}`, reactor.id);
-          await incrementUserExperience(data.message.author.id, 5);
-        }
+      if (users.size > 0 && !alreadyInteracted && data.message.channel.permissionsFor(data.message.guild.id).has(PermissionFlagsBits.ViewChannel)) {
+        await keydb.set(`discord/reaction_messages/${data.message.id}`, reactor.id);
+        await incrementUserExperience(data.message.author.id, 5);
       }
-    })();
+    }
+  })();
 
-    if (data.message.channel.id != env.ROLES_CHANNEL) return;
+  if (data.message.channel.id != env.ROLES_CHANNEL) return;
 
-    const entry = Object.values(Roles).find((item) => item.emoji == data.emoji.name);
-    const member = await data.message.guild.members.fetch(reactor.id);
+  const entry = Object.values(Roles).find((item) => item.emoji == data.emoji.name);
+  const member = await data.message.guild.members.fetch(reactor.id);
 
-    if (entry && !member.roles.resolve(entry.role)) member.roles.add(entry.role);
-  });
+  if (entry && !member.roles.resolve(entry.role)) member.roles.add(entry.role);
+});
 
-if (env.NODE_ENV == 'production')
-  client.on('messageReactionRemove', async (data, reactor) => {
-    if (data.message.channel.id != env.ROLES_CHANNEL) return;
+client.on('messageReactionRemove', async (data, reactor) => {
+  if (data.message.channel.id != env.ROLES_CHANNEL) return;
 
-    const entry = Object.values(Roles).find((item) => item.emoji == data.emoji.name);
-    const member = await data.message.guild.members.fetch(reactor.id);
+  const entry = Object.values(Roles).find((item) => item.emoji == data.emoji.name);
+  const member = await data.message.guild.members.fetch(reactor.id);
 
-    if (entry && member.roles.resolve(entry.role)) member.roles.remove(entry.role);
-  });
+  if (entry && member.roles.resolve(entry.role)) member.roles.remove(entry.role);
+});
 
 client.on('interactionCreate', async (data) => {
-  if (env.NODE_ENV != 'production' && data instanceof CommandInteraction && data.commandName != 'giveaways') return;
-
   if (data instanceof ButtonInteraction) {
     switch (data.customId) {
       case 'device-role:puffco-peak-pro':
@@ -226,128 +222,74 @@ client.on('interactionCreate', async (data) => {
   }
 });
 
-if (env.NODE_ENV == 'production')
-  client.on('messageCreate', async (msg) => {
-    if (!msg.author.bot && msg.guild) {
-      if (!(msg.channel instanceof TextChannel)) return;
-      const attachment = msg.attachments.size > 0;
-      const xpToAdd = Math.floor(Math.random() * (attachment ? 14 : 7)) + (attachment ? 16 : 8);
+client.on('messageCreate', async (msg) => {
+  if (!msg.author.bot && msg.guild) {
+    if (!(msg.channel instanceof TextChannel)) return;
+    const attachment = msg.attachments.size > 0;
+    const xpToAdd = Math.floor(Math.random() * (attachment ? 14 : 7)) + (attachment ? 16 : 8);
 
-      if (msg.channel.permissionsFor(msg.guild.id).has(PermissionFlagsBits.ViewChannel)) {
-        await prisma.discord_users.upsert({
-          where: { id: msg.author.id },
-          update: {
-            messages: {
-              increment: 1,
-            },
-          },
-          create: {
-            id: msg.author.id,
-            messages: 1,
-          },
-        });
-
-        const lastMessage = await msg.channel.messages.fetch({ limit: 2, cache: false });
-        const lastUserMessage = lastMessage.filter((m) => m.author.id === msg.author.id).last();
-
-        if (lastUserMessage && Date.now() - lastUserMessage.createdTimestamp < 5000) return;
-        await incrementUserExperience(msg.author.id, xpToAdd);
-      }
-    }
-
-    if (msg.channel.id != msg.guild.systemChannel.id || !msg.roleSubscriptionData) return;
-
-    const user = await prisma.users.findFirst({
-      include: {
-        connections: true,
-      },
-      where: {
-        connections: {
-          some: {
-            platform_id: msg.author.id,
+    if (msg.channel.permissionsFor(msg.guild.id).has(PermissionFlagsBits.ViewChannel)) {
+      await prisma.discord_users.upsert({
+        where: { id: msg.author.id },
+        update: {
+          messages: {
+            increment: 1,
           },
         },
-      },
-    });
-
-    if (!user) return;
-
-    const exists = await prisma.discord_subscriptions.findFirst({
-      where: {
-        platform_id: msg.author.id,
-        user_id: user.id,
-        subscription_id: msg.roleSubscriptionData.roleSubscriptionListingId,
-      },
-    });
-
-    if (msg.roleSubscriptionData.isRenewal && exists)
-      await prisma.discord_subscriptions.update({
-        where: {
-          user_id_subscription_id_platform_id: {
-            platform_id: msg.author.id,
-            user_id: user.id,
-            subscription_id: msg.roleSubscriptionData.roleSubscriptionListingId,
-          },
-        },
-        data: {
-          active: true,
-          months_active: msg.roleSubscriptionData.totalMonthsSubscribed,
+        create: {
+          id: msg.author.id,
+          messages: 1,
         },
       });
 
-    if (!exists)
-      await prisma.discord_subscriptions.create({
-        data: {
-          platform_id: msg.author.id,
-          user_id: user.id,
-          subscription_id: msg.roleSubscriptionData.roleSubscriptionListingId,
-          subscribed_since: new Date(msg.createdTimestamp),
-          months_active: msg.roleSubscriptionData.totalMonthsSubscribed,
-          active: true,
-        },
-      });
-  });
+      const lastMessage = await msg.channel.messages.fetch({ limit: 2, cache: false });
+      const lastUserMessage = lastMessage.filter((m) => m.author.id === msg.author.id).last();
 
-if (env.NODE_ENV == 'production')
-  client.on('voiceStateUpdate', async (oldState, newState) => {
-    if (newState.member?.user.bot) return;
-
-    if (oldState.channel != newState.channel) changeVoiceText(newState.channel?.id, newState.member.user.id);
-    if (oldState.channel != newState.channel) switchSoundboardPermissions(oldState.channel, newState.channel, newState.member.user.id);
-
-    if (oldState.channel != newState.channel && newState.channel) {
-      await keydb.set(`discord/${newState.member.id}/voice`, newState.channel.id);
-      startVoiceChannelTimer(newState.channel, newState.member.id);
-
-      let link: string;
-      try {
-        const invites = await newState.channel.fetchInvites();
-        if (!invites.first()) link = `https://discord.gg/${(await newState.channel.createInvite({ maxAge: 0 })).code}`;
-        link = `https://discord.gg/${invites.first().code}`;
-      } catch (error) {}
-
-      const user = await prisma.users.findFirst({ include: { connections: true }, where: { connections: { some: { platform_id: newState.member.id, platform: 'discord' } } } });
-      fetch(`${env.GATEWAY_HOST}/user/${user?.id}/update`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ voice: { id: newState.channel.id, name: newState.channel.name, link } }),
-      }).catch(console.error);
-    } else if (oldState.channel != newState.channel && oldState.channel && !newState.channel) {
-      await keydb.del(`discord/${oldState.member.id}/voice`);
-
-      const user = await prisma.users.findFirst({ include: { connections: true }, where: { connections: { some: { platform_id: oldState.member.id, platform: 'discord' } } } });
-      fetch(`${env.GATEWAY_HOST}/user/${user?.id}/update`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ voice: null }),
-      }).catch(console.error);
-
-      const timer = voiceChannelTimers.get(oldState.member.id);
-      if (timer) {
-        for (const t of timer) clearInterval(t);
-        voiceChannelTimers.delete(oldState.member.id);
-      }
+      if (lastUserMessage && Date.now() - lastUserMessage.createdTimestamp < 5000) return;
+      await incrementUserExperience(msg.author.id, xpToAdd);
     }
-  });
+  }
+});
+
+client.on('voiceStateUpdate', async (oldState, newState) => {
+  if (newState.member?.user.bot) return;
+
+  if (oldState.channel != newState.channel) changeVoiceText(newState.channel?.id, newState.member.user.id);
+  if (oldState.channel != newState.channel) switchSoundboardPermissions(oldState.channel, newState.channel, newState.member.user.id);
+
+  if (oldState.channel != newState.channel && newState.channel) {
+    await keydb.set(`discord/${newState.member.id}/voice`, newState.channel.id);
+    startVoiceChannelTimer(newState.channel, newState.member.id);
+
+    let link: string;
+    try {
+      const invites = await newState.channel.fetchInvites();
+      if (!invites.first()) link = `https://discord.gg/${(await newState.channel.createInvite({ maxAge: 0 })).code}`;
+      link = `https://discord.gg/${invites.first().code}`;
+    } catch (error) {}
+
+    const user = await prisma.users.findFirst({ include: { connections: true }, where: { connections: { some: { platform_id: newState.member.id, platform: 'discord' } } } });
+    fetch(`${env.GATEWAY_HOST}/user/${user?.id}/update`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ voice: { id: newState.channel.id, name: newState.channel.name, link } }),
+    }).catch(console.error);
+  } else if (oldState.channel != newState.channel && oldState.channel && !newState.channel) {
+    await keydb.del(`discord/${oldState.member.id}/voice`);
+
+    const user = await prisma.users.findFirst({ include: { connections: true }, where: { connections: { some: { platform_id: oldState.member.id, platform: 'discord' } } } });
+    fetch(`${env.GATEWAY_HOST}/user/${user?.id}/update`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ voice: null }),
+    }).catch(console.error);
+
+    const timer = voiceChannelTimers.get(oldState.member.id);
+    if (timer) {
+      for (const t of timer) clearInterval(t);
+      voiceChannelTimers.delete(oldState.member.id);
+    }
+  }
+});
 
 client.login(env.DISCORD_TOKEN);

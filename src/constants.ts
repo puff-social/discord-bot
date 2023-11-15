@@ -1,4 +1,5 @@
 import { DeviceModelColors } from '@puff-social/commons/dist/puffco';
+import { env } from './env';
 
 export const AllowedRolesMap: Record<string, { role: string; name: string }> = {
   '1109581279097258065': { role: '1091533760119443536', name: 'Peak Pro' },
@@ -67,8 +68,7 @@ export const Roles = {
 };
 
 export const VoiceTickers = {
-  Groups: '1112498709280854139',
-  Members: '1112498736791310396',
+  Members: env.NODE_ENV == 'production' ? '1112498736791310396' : '1174214987774959739',
 };
 
 export const RankRoles: Record<string, { id: string }> = {
@@ -83,27 +83,27 @@ export const RankRoles: Record<string, { id: string }> = {
 };
 
 export const Channels = {
-  Giveaways: '1152479156571996210',
-  General: '479780824464490507',
-  Roles: '1103927473458135121',
-  RanksNBots: '1110744300662296597',
-  RigShowcase: '1111547333537173544',
-  FirmwareUpdates: '1121643313209032734',
-  VoiceLogs: '1165028178671181946',
+  Giveaways: env.NODE_ENV == 'production' ? '1152479156571996210' : '1174210048004722758',
+  General: env.NODE_ENV == 'production' ? '479780824464490507' : '1174210101125595178',
+  Roles: env.NODE_ENV == 'production' ? '1103927473458135121' : '1174210101125595178',
+  RanksNBots: env.NODE_ENV == 'production' ? '1110744300662296597' : '1174210189826740224',
+  RigShowcase: env.NODE_ENV == 'production' ? '1111547333537173544' : '1174210209183440917',
+  FirmwareUpdates: env.NODE_ENV == 'production' ? '1121643313209032734' : '1174210233007087636',
+  VoiceLogs: env.NODE_ENV == 'production' ? '1165028178671181946' : '1174210246219141160',
 };
 
 export const VoiceTextChannels = {
-  VCText: '1101008224108433428',
-  GamingText: '1168273939903037491',
-  PenthouseText: '1168274007322275890',
+  VCText: env.NODE_ENV == 'production' ? '1101008224108433428' : '1174210705197637662',
+  GamingText: env.NODE_ENV == 'production' ? '1168273939903037491' : '1174210737556688968',
+  PenthouseText: env.NODE_ENV == 'production' ? '1168274007322275890' : '1174210767751483443',
 };
 
 export const VoiceChannels = {
-  General: '479770647254532099',
-  SeshLive: '1133468595624612051',
-  SeshCircle: '479770514597085204',
-  GamingLounge: '1135327888216969276',
-  Penthouse: '1099607402657087569',
+  General: env.NODE_ENV == 'production' ? '479770647254532099' : '1174210575044186122',
+  SeshLive: env.NODE_ENV == 'production' ? '1133468595624612051' : '1174210541821100102',
+  SeshCircle: env.NODE_ENV == 'production' ? '479770514597085204' : '1174210387890163722',
+  GamingLounge: env.NODE_ENV == 'production' ? '1135327888216969276' : '1174210613237526568',
+  Penthouse: env.NODE_ENV == 'production' ? '1099607402657087569' : '1174210648788439050',
 };
 
 export const VoiceToText = {
