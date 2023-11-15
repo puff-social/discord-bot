@@ -115,9 +115,7 @@ export async function createGiveawayModal(data: ModalSubmitInteraction) {
 
 export async function editGiveawayModal(data: ModalSubmitInteraction) {
   const [, id] = data.customId.split(':');
-  console.log(id);
   const giveaway = await prismaDiscord.giveaways.findFirst({ where: { id } });
-  console.log(giveaway);
 
   const name = data.fields.getTextInputValue('name');
   const description = data.fields.getTextInputValue('description');
