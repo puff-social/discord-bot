@@ -26,5 +26,5 @@ export async function switchSoundboardPermissions(oldChannel: Channel, newChanne
     if (newChannel && newChannel instanceof VoiceChannel) await newChannel.permissionOverwrites.create(user, {
       UseSoundboard: true
     });
-  }, 100);
+  }, 400);
 }
