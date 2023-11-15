@@ -1,4 +1,4 @@
-import { TextChannel } from 'discord.js';
+import { Channel, TextChannel, VoiceChannel } from 'discord.js';
 import { client } from '..';
 import { VoiceTextChannels, VoiceToText } from '../constants';
 
@@ -18,4 +18,11 @@ export async function changeVoiceText(id: string, user: string) {
         ViewChannel: true,
       });
   }
+}
+
+export async function switchSoundboardPermissions(oldChannel: Channel, newChannel: Channel, user: string) {
+  if (oldChannel && oldChannel instanceof VoiceChannel) await oldChannel.permissionOverwrites.delete(user);
+  if (newChannel && newChannel instanceof VoiceChannel) await newChannel.permissionOverwrites.create(user, {
+    UseSoundboard: true
+  });
 }
