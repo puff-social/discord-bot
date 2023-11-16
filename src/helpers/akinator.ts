@@ -258,6 +258,8 @@ export class Game extends EventEmitter {
     buttonInteraction: ButtonInteraction,
     skipStep?: boolean
   ) {
+    if (!skipStep) await buttonInteraction.deferUpdate();
+    
     const step = !skipStep && await this.instance.step(answer as 0 | 1 | 2 | 3 | 4);
     const win = this.instance.progress >= 70 && !skipStep && await this.instance.win();
     if (!skipStep && step && 'answers' in step)
@@ -321,8 +323,6 @@ export class Game extends EventEmitter {
     });
 
     this.updateActivity();
-
-    if (!skipStep) await buttonInteraction.deferUpdate();
   }
 }
 
