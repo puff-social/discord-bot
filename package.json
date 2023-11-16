@@ -12,7 +12,7 @@
     "dev": "ts-node-dev --exit-child --transpile-only -r dotenv/config src",
     "prisma": "(cd discord-db && prisma generate) && (cd db && prisma generate)",
     "prisma:pull": "(cd discord-db && prisma db pull) && (cd db && prisma db pull)",
-    "postinstall": "cat node_modules/.pnpm/aki-api@6.0.9/node_modules/aki-api/dist/src/index.js | sed -e '/const fs .*/ s/^#*/\\/\\//' | sed -e '/const https .*/ s/^#*/\\/\\//' | sed -e '/https.globalAgent.options.ca.*/ s/^#*/\\/\\//' | tee node_modules/.pnpm/aki-api@6.0.9/node_modules/aki-api/dist/src/index.js"
+    "postinstall": "cat node_modules/.pnpm/aki-api\\@6.0.9/node_modules/aki-api/dist/src/index.js | sed -e '/const fs .*/ s/^#*/\\/\\//' | sed -e '/const https .*/ s/^#*/\\/\\//' | sed -e '/https.globalAgent.options.ca.*/ s/^#*/\\/\\//' | tee node_modules/.pnpm/aki-api\\@6.0.9/node_modules/aki-api/dist/src/index.js"
   },
   "devDependencies": {
     "@types/node": "^18.0.4",
