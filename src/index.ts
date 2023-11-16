@@ -12,7 +12,7 @@ import {
   AutocompleteInteraction,
 } from 'discord.js';
 
-import { Roles } from './constants';
+import { Channels, Roles } from './constants';
 import { env } from './env';
 import { prisma } from './connectivity/prisma';
 import { startVoiceChannelTimer, voiceChannelTimers } from './data';
@@ -37,6 +37,8 @@ import { deleteGiveaway, enterGiveaway, leaveGiveaway, startGiveaway } from './i
 import { giveawaysAutoComplete } from './interactions/autocomplete/giveaways';
 import { changeVoiceText, switchSoundboardPermissions } from './helpers/voice';
 import { akinator, akinatorAnswer } from './commands/akinator';
+import { Channel } from 'diagnostics_channel';
+import { invalidChannel } from './commands/utils';
 
 export const client = new Client({
   intents:
@@ -231,7 +233,10 @@ client.on('interactionCreate', async (data) => {
         break;
 
       case 'akinator':
-        akinator(data as ChatInputCommandInteraction);
+        if (data.channel.id == Channels.RanksNBots)
+          akinator(data as ChatInputCommandInteraction);
+        else
+          invalidChannel(Channels.RanksNBots, data);
         break;
     }
   } else if (data instanceof AutocompleteInteraction) {
