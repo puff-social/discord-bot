@@ -23,7 +23,7 @@ import { updateMembersTicker } from './utils/tickers';
 import { incrementUserExperience } from './utils/experience';
 
 import './modules/giveaways';
-import { getRank } from './commands/ranks';
+import { getLeaderboards, getRank } from './commands/ranks';
 import { seshCommand } from './commands/sesh';
 import { manageBirthday } from './commands/birthdays';
 import { manageGiveaways } from './commands/giveaways';
@@ -217,9 +217,15 @@ client.on('interactionCreate', async (data) => {
       case 'smoke':
         seshCommand(data);
         break;
+        
       case 'rank':
         getRank(data);
         break;
+
+      case 'leaderboards':
+        getLeaderboards(data as ChatInputCommandInteraction);
+        break;
+
       case 'birthday':
         manageBirthday(data as ChatInputCommandInteraction);
         break;
