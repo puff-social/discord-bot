@@ -36,6 +36,7 @@ import { createGiveawayModal, editGiveawayModal } from './interactions/modals/gi
 import { deleteGiveaway, enterGiveaway, leaveGiveaway, startGiveaway } from './interactions/buttons/giveaways';
 import { giveawaysAutoComplete } from './interactions/autocomplete/giveaways';
 import { changeVoiceText, switchSoundboardPermissions } from './helpers/voice';
+import { akinator, akinatorAnswer } from './commands/akinator';
 
 export const client = new Client({
   intents:
@@ -182,6 +183,21 @@ client.on('interactionCreate', async (data) => {
       case 'giveaway-already-entered:leave':
         leaveGiveaway(data);
         break;
+
+      default: {
+        if (!data.customId.includes(':')) return;
+
+        const [prefix,argument] = data.customId.split(':');
+
+        switch (prefix) {
+          case 'akinator':
+            akinatorAnswer(data, argument);
+            break;
+        
+          default:
+            break;
+        }
+      }
     }
   } else if (data instanceof ModalSubmitInteraction) {
     switch (data.customId.split(':')[0]) {
@@ -212,6 +228,10 @@ client.on('interactionCreate', async (data) => {
 
       case 'giveaways':
         manageGiveaways(data as ChatInputCommandInteraction);
+        break;
+
+      case 'akinator':
+        akinator(data as ChatInputCommandInteraction);
         break;
     }
   } else if (data instanceof AutocompleteInteraction) {

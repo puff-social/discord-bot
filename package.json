@@ -25,6 +25,7 @@
   "dependencies": {
     "@prisma/client": "4.14.1",
     "@puff-social/commons": "^1.0.34",
+    "aki-api": "^6.0.9",
     "discord.js": "^14.13.0",
     "envsafe": "^2.0.3",
     "fastify": "^4.17.0",
