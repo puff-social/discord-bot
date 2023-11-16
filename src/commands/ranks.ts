@@ -64,7 +64,7 @@ export async function getLeaderboards(data: ChatInputCommandInteraction) {
         member: await data.guild.members.fetch(user.id)
       })));
 
-      const board = user.map((user, index) => (`${[index + 1]}. **${user.member.displayName}** | \`Lvl: ${user.level.toLocaleString()} (${user.xp.toLocaleString()} XP)\``))
+      const board = user.map((user, index) => (`${[index + 1]}. **<@${user.member.id}>** | \`Lvl: ${user.level.toLocaleString()} (${user.xp.toLocaleString()} XP)\``))
 
       return data.editReply({
         embeds: [{
