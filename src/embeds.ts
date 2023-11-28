@@ -33,7 +33,7 @@ export const displayDeviceEmbed = {
 
 export const colorRoleEmbed = {
   title: 'Choose a Color',
-  description: 'Wanna stylize your chat a bit with a name color? Click a button below.\n\n*This will overwrite the color from your subscription*',
+  description: 'Wanna stylize your chat a bit with a name color? Click a button below.',
   color: 0xbb1ca3,
   footer: {
     text: 'puff.social - display colors',
