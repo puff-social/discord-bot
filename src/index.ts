@@ -13,6 +13,8 @@ import {
   NewsChannel,
   ComponentType,
   ButtonStyle,
+  DMChannel,
+  GuildChannel,
 } from 'discord.js';
 
 import { Channels, Roles } from './constants';
@@ -40,7 +42,6 @@ import { deleteGiveaway, enterGiveaway, leaveGiveaway, startGiveaway } from './i
 import { giveawaysAutoComplete } from './interactions/autocomplete/giveaways';
 import { changeVoiceText, switchSoundboardPermissions } from './helpers/voice';
 import { akinator, akinatorAnswer } from './commands/akinator';
-import { Channel } from 'diagnostics_channel';
 import { invalidChannel } from './commands/utils';
 
 export const client = new Client({
@@ -296,6 +297,56 @@ client.on('interactionCreate', async (data) => {
         giveawaysAutoComplete(data as AutocompleteInteraction);
     }
   }
+});
+
+client.on('messageUpdate', async (old, msg) => {
+  if (msg.author.bot) return;
+  if (!(msg.channel instanceof GuildChannel)) return;
+  if (msg.cleanContent == old.cleanContent) return;
+  if (!msg.channel.permissionsFor(msg.guild.id).has(PermissionFlagsBits.ViewChannel)) return;
+
+  const logsChannel = await client.channels.fetch(Channels.ChatLogs);
+  if (!(logsChannel instanceof TextChannel)) return;
+
+  logsChannel.send({
+    embeds: [
+      {
+        author: { name: msg.author.globalName, icon_url: msg.author.avatarURL() },
+        url: `https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id}`,
+        description: `Old:\n\`\`\`\n${(old.cleanContent ?? 'N/A').substring(0, 1024)}\n\`\`\`\n\n**New**:\n\`\`\`\n${(msg.cleanContent ?? 'N/A').substring(0, 1024)}\n\`\`\``,
+        fields: [
+          { name: 'Where', value: `<#${msg.channel.id}>` },
+          { name: 'ID', value: `\`${msg.id}\`` },
+        ],
+        color: 0x1aa7ec,
+        footer: { text: 'puff.social logs - Message Updated' },
+      },
+    ],
+  });
+});
+
+client.on('messageDelete', async (msg) => {
+  if (msg.author.bot) return;
+  if (!(msg.channel instanceof GuildChannel)) return;
+  if (!msg.channel.permissionsFor(msg.guild.id).has(PermissionFlagsBits.ViewChannel)) return;
+
+  const logsChannel = await client.channels.fetch(Channels.ChatLogs);
+  if (!(logsChannel instanceof TextChannel)) return;
+
+  logsChannel.send({
+    embeds: [
+      {
+        author: { name: msg.author.globalName, icon_url: msg.author.avatarURL() },
+        description: `Content:\n\`\`\`\n${msg.cleanContent}\n\`\`\``,
+        fields: [
+          { name: 'Where', value: `<#${msg.channel.id}>` },
+          { name: 'ID', value: `\`${msg.id}\`` },
+        ],
+        color: 0xff0000,
+        footer: { text: 'puff.social logs - Message Deleted' },
+      },
+    ],
+  });
 });
 
 client.on('messageCreate', async (msg) => {

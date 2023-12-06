@@ -90,6 +90,7 @@ export const Channels = {
   RigShowcase: env.NODE_ENV == 'production' ? '1111547333537173544' : '1174210209183440917',
   FirmwareUpdates: env.NODE_ENV == 'production' ? '1121643313209032734' : '1174210233007087636',
   VoiceLogs: env.NODE_ENV == 'production' ? '1165028178671181946' : '1174210246219141160',
+  ChatLogs: env.NODE_ENV == 'production' ? '1181840125559320576' : '1181840334674743316',
 };
 
 export const VoiceTextChannels = {
