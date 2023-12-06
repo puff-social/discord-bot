@@ -10,11 +10,14 @@ import {
   ChatInputCommandInteraction,
   ModalSubmitInteraction,
   AutocompleteInteraction,
+  NewsChannel,
+  ComponentType,
+  ButtonStyle,
 } from 'discord.js';
 
 import { Channels, Roles } from './constants';
 import { env } from './env';
-import { prisma } from './connectivity/prisma';
+import { prisma, prismaDiscord } from './connectivity/prisma';
 import { startVoiceChannelTimer, voiceChannelTimers } from './data';
 
 import './api';
@@ -106,6 +109,48 @@ client.on('guildMemberAdd', async (member) => {
       });
       await incrementUserExperience(used.inviter.id, Math.floor(Math.random() * 5) + 15);
       await keydb.set(`discord/invite/${used.code}/used-by/${member.user.id}`, new Date().getTime());
+    }
+  }
+});
+
+client.on('guildMemberRemove', async (member) => {
+  const runningGiveaways = await prismaDiscord.giveaways.findMany({ where: { ended: false, draft: false } });
+
+  for (const giveaway of runningGiveaways) {
+    const entries = await keydb.hkeys(`giveaways/${giveaway.id}`);
+    if (entries.includes(member.id)) {
+      await keydb.hdel(`giveaways/${giveaway.id}`, member.id);
+
+      const giveawaysChannel = await client.channels.fetch(Channels.Giveaways);
+      if (giveawaysChannel instanceof NewsChannel) {
+        const message = await giveawaysChannel.messages.fetch(giveaway.message_id);
+        if (!message) {
+          console.error('There was an error editing the giveaway message to let', member.id, 'leave', giveaway.id, 'failed to locate the original message', giveaway.message_id);
+          return;
+        }
+
+        const keys = await keydb.hkeys(`giveaways/${giveaway.id}`);
+        const field = message.embeds[0].fields.find((field) => field.name == 'Entries');
+        if (field) field.value = keys.length.toLocaleString();
+
+        await message.edit({
+          embeds: message.embeds,
+          components: [
+            {
+              type: ComponentType.ActionRow,
+              components: [
+                {
+                  custom_id: 'giveaway-event:enter',
+                  emoji: { name: '💝' },
+                  label: keys.length.toLocaleString(),
+                  style: ButtonStyle.Primary,
+                  type: ComponentType.Button,
+                },
+              ],
+            },
+          ],
+        });
+      }
     }
   }
 });
