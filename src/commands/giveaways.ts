@@ -29,7 +29,7 @@ export async function manageGiveaways(data: ChatInputCommandInteraction) {
               {
                 type: ComponentType.TextInput,
                 custom_id: 'header',
-                label: 'Header Image (Optional)',
+                label: 'Header Image URL (Optional)',
                 required: false,
                 style: TextInputStyle.Short,
               },
