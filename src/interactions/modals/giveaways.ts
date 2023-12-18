@@ -88,16 +88,16 @@ export async function createGiveawayModal(data: ModalSubmitInteraction) {
         components: [
           {
             type: ComponentType.Button,
-            label: 'Start Giveaway',
-            emoji: { name: '🎉' },
-            custom_id: 'giveaway-create:start',
+            label: 'Start and alert users',
+            emoji: { name: '📣' },
+            custom_id: 'giveaway-create:start-announce',
             style: ButtonStyle.Primary,
           },
           {
             type: ComponentType.Button,
-            label: 'Start & Notify',
-            emoji: { name: '📣' },
-            custom_id: 'giveaway-create:start-announce',
+            label: 'Start without notification',
+            emoji: { name: '🔕' },
+            custom_id: 'giveaway-create:start',
             style: ButtonStyle.Primary,
           },
           {
