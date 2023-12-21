@@ -42,8 +42,8 @@ export async function getLeaderboards(data: ChatInputCommandInteraction) {
     case 'ranks': {
       await data.deferReply();
 
-      const users = await prisma.discord_users.findMany({ orderBy: [{level: 'desc'}, {xp: 'desc'}], take: 20 });
-    
+      const users = await prisma.discord_users.findMany({ orderBy: [{ level: 'desc' }, { xp: 'desc' }], take: 20 });
+
       if (!users) {
         data.reply({
           ephemeral: true,
@@ -59,9 +59,18 @@ export async function getLeaderboards(data: ChatInputCommandInteraction) {
         return;
       }
 
-      const user = await Promise.all(users.map(async (user) => ({
+      const inServer = users.filter(async usr => {
+        try {
+          const member = (await data.guild.members.fetch(usr.id));
+          return !!member;
+        } catch (error) {
+          return false;
+        }
+      });
+
+      const user = await Promise.all(inServer.map(async (user) => ({
         ...user,
-        member: await data.guild.members.fetch(user.id)
+        member: (await data.guild.members.fetch(user.id))
       })));
 
       const board = user.map((user, index) => (`${[index + 1]}. **<@${user.member.id}>** | \`Lvl: ${user.level.toLocaleString()} (${user.xp.toLocaleString()} XP)\``))
