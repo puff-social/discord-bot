@@ -154,6 +154,9 @@ client.on('guildMemberRemove', async (member) => {
       }
     }
   }
+
+  // Delete the user and their level from the database, they literally don't serve to be here.
+  await prisma.discord_users.delete({ where: { id: member.user.id } });
 });
 
 client.on('messageReactionAdd', async (data, reactor) => {
@@ -393,7 +396,7 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
       const invites = await newState.channel.fetchInvites();
       if (!invites.first()) link = `https://discord.gg/${(await newState.channel.createInvite({ maxAge: 0 })).code}`;
       link = `https://discord.gg/${invites.first().code}`;
-    } catch (error) {}
+    } catch (error) { }
 
     const user = await prisma.users.findFirst({ include: { connections: true }, where: { connections: { some: { platform_id: newState.member.id, platform: 'discord' } } } });
     fetch(`${env.GATEWAY_HOST}/user/${user?.id}/update`, {
