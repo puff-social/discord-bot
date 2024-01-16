@@ -159,11 +159,12 @@ export const Rules = [
   '1️⃣. As this server relates to cannabis consumption, you must be 21+ years old to be present in this server, if we find out otherwise you will be banned without question.',
   "2️⃣. Respect your fellow members, we're all here for the same thing, treat others as though you would want to be treated.",
   '3️⃣. Advertising is strictly prohibited, chances are if you have to advertise it here nobody wants it anyway.' +
-    '\n*(This rule has some exceptions if you offer/make puffco related products or services)*',
+  '\n*(This rule has some exceptions if you offer/make puffco related products or services)*',
   "4️⃣. We don't allow any type of NSFW content in this server, keep it anywhere but here.",
   '5️⃣. Spamming chats or mic spamming in voice channels is prohibited.',
   "6️⃣. Follow Discord ToS as we're required to enforce those here.",
   "7️⃣. Currently we're only able to moderate english, so only english is permitted in the chats.",
   "8️⃣. Don't ask for roles or permissions.",
   '9️⃣. Be courteous to users in the voice channels by not recording or live streaming them.\n*(Referring to external sources, not like discord live)*\n*(Certain channels may exist for this over time)*',
+  "🔟. Don't be a troll, if you have to question that something might fall under this rule you need to reconsider your current thought.",
 ];
