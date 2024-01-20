@@ -159,6 +159,13 @@ client.on('guildMemberRemove', async (member) => {
   await prisma.discord_users.delete({ where: { id: member.user.id } });
 });
 
+client.on('guildMemberUpdate', async (oldMember, member) => {
+  if (
+    member.nickname.startsWith('!') &&
+    member.nickname != member.user.displayName
+  ) member.setNickname(member.nickname.replace(/^!+(?=[a-zA-Z])/, ''))
+});
+
 client.on('messageReactionAdd', async (data, reactor) => {
   (async () => {
     if (data.message.attachments.size > 0 && reactor.id != data.message.author.id) {
@@ -238,13 +245,13 @@ client.on('interactionCreate', async (data) => {
       default: {
         if (!data.customId.includes(':')) return;
 
-        const [prefix,argument] = data.customId.split(':');
+        const [prefix, argument] = data.customId.split(':');
 
         switch (prefix) {
           case 'akinator':
             akinatorAnswer(data, argument);
             break;
-        
+
           default:
             break;
         }
@@ -266,7 +273,7 @@ client.on('interactionCreate', async (data) => {
       case 'smoke':
         seshCommand(data);
         break;
-        
+
       case 'rank':
         getRank(data);
         break;
