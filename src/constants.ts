@@ -9,6 +9,7 @@ export const AllowedRolesMap: Record<string, { role: string; name: string }> = {
   '1115372397361635479': { role: '1115370363778515027', name: 'Pearl' },
   '1115372382786441277': { role: '1115370368731987990', name: 'Onyx' },
   '1162214735798866001': { role: '1162214606379417730', name: 'Desert' },
+  '1214788302931103764': { role: '1214787209471987723', name: 'Flourish' },
 };
 
 export const DeviceRoleColorMap: Record<string, number> = {
@@ -19,6 +20,7 @@ export const DeviceRoleColorMap: Record<string, number> = {
   '1115372397361635479': parseInt(DeviceModelColors.PeachWhite.slice(1), 16),
   '1115372382786441277': parseInt(DeviceModelColors.PeachBlack.slice(1), 16),
   '1162214735798866001': parseInt(DeviceModelColors.Desert.slice(1), 16),
+  '1214788302931103764': parseInt(DeviceModelColors.Flourish.slice(1), 16),
 };
 
 export const DisplayDeviceRolesMap = {
@@ -29,6 +31,7 @@ export const DisplayDeviceRolesMap = {
   'puffco-onyx': '1115372382786441277',
   'puffco-pearl': '1115372397361635479',
   'puffco-desert': '1162214735798866001',
+  'puffco-flourish': '1214788302931103764'
 };
 
 export const DeviceDisplayButtons = {
@@ -39,6 +42,7 @@ export const DeviceDisplayButtons = {
   pearl: { name: 'Pearl', emoji: { name: 'pearl', id: '1115367284316319754' }, action: 'puffco-pearl' },
   onyx: { name: 'Onyx', emoji: { name: 'onyx', id: '1115367196781203578' }, action: 'puffco-onyx' },
   desert: { name: 'Desert', emoji: { name: 'desert', id: '1162214566831333376' }, action: 'puffco-desert' },
+  flourish: { name: 'Desert', emoji: { name: 'flourish', id: '1214787175141609522' }, action: 'puffco-flourish' },
 };
 
 export const ProductModelMap = {
@@ -56,13 +60,15 @@ export const ProductModelMap = {
   '72': { name: 'Pearl', emoji: `<:pearl:${DeviceDisplayButtons.pearl.emoji.id}>`, role: '1115370363778515027' },
   '15': { name: 'Desert', emoji: `<:desert:${DeviceDisplayButtons.desert.emoji.id}>`, role: '1162214606379417730' },
   '74': { name: 'Desert', emoji: `<:desert:${DeviceDisplayButtons.desert.emoji.id}>`, role: '1162214606379417730' },
+  '17': { name: 'Flourish', emoji: `<:flourish:${DeviceDisplayButtons.flourish.emoji.id}>`, role: '1214787209471987723' },
+  '75': { name: 'Flourish', emoji: `<:flourish:${DeviceDisplayButtons.flourish.emoji.id}>`, role: '1214787209471987723' },
 };
 
 export const Roles = {
   Birthday: { role: '1112497816242229430', emoji: '' },
   Booster: { role: '1103957954992021545', emoji: '' },
   Giveaways: { role: '1152733455159939254', emoji: '💝' },
-  SeshAlerts: { role: '1100653810935930951', emoji: '🌿' },
+  SeshAlerts: { role: env.NODE_ENV == 'production' ? '1100653810935930951' : '1199528232169513000', emoji: '🌿' },
   SiteUpdates: { role: '1100653692983717940', emoji: '📝' },
   ServerAnnouncements: { role: '1103917695864410242', emoji: '📢' },
 };
