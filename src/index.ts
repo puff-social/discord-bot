@@ -221,6 +221,7 @@ client.on('interactionCreate', async (data) => {
       case 'color-role:orange':
       case 'color-role:red':
       case 'color-role:brown':
+      case 'color-role:black':
         colorRole(data);
         break;
       case 'color-role:none':

@@ -157,6 +157,7 @@ export const ColorRoles: Record<string, { name: string; role: string; emoji: str
   orange: { name: 'Orange', role: '1110341723072237658', emoji: '🟧' },
   red: { name: 'Red', role: '1110341836565909545', emoji: '🟥' },
   brown: { name: 'Brown', role: '1110341864369946664', emoji: '🟫' },
+  black: { name: 'Black', role: '1110341864369946664', emoji: '⬛' },
 };
 
 export const SeshVoiceChannels = ['479770514597085204', '1133468595624612051'];
