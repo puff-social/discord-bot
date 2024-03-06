@@ -42,7 +42,7 @@ export const DeviceDisplayButtons = {
   pearl: { name: 'Pearl', emoji: { name: 'pearl', id: '1115367284316319754' }, action: 'puffco-pearl' },
   onyx: { name: 'Onyx', emoji: { name: 'onyx', id: '1115367196781203578' }, action: 'puffco-onyx' },
   desert: { name: 'Desert', emoji: { name: 'desert', id: '1162214566831333376' }, action: 'puffco-desert' },
-  flourish: { name: 'Desert', emoji: { name: 'flourish', id: '1214787175141609522' }, action: 'puffco-flourish' },
+  flourish: { name: 'Flourish', emoji: { name: 'flourish', id: '1214787175141609522' }, action: 'puffco-flourish' },
 };
 
 export const ProductModelMap = {

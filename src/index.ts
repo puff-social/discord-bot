@@ -155,7 +155,7 @@ client.on('guildMemberRemove', async (member) => {
     }
   }
 
-  // Delete the user and their level from the database, they literally don't serve to be here.
+  // Delete the user and their level from the database, they literally don't deserve to keep if they leave.
   await prisma.discord_users.delete({ where: { id: member.user.id } });
 });
 
