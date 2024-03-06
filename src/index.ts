@@ -161,7 +161,7 @@ client.on('guildMemberRemove', async (member) => {
 
 client.on('guildMemberUpdate', async (oldMember, member) => {
   if (
-    member.nickname.startsWith('!') &&
+    member.nickname?.startsWith('!') &&
     member.nickname != member.user.displayName
   ) member.setNickname(member.nickname.replace(/^!+(?=[a-zA-Z])/, ''))
 });
