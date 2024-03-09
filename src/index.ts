@@ -405,17 +405,19 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
     startVoiceChannelTimer(newState.channel, newState.member.id);
 
     let link: string;
-    try {
-      const invites = await newState.channel.fetchInvites();
-      if (!invites.first()) link = `https://discord.gg/${(await newState.channel.createInvite({ maxAge: 0 })).code}`;
-      link = `https://discord.gg/${invites.first().code}`;
-    } catch (error) { }
+    if (newState.channel.permissionsFor(newState.guild.id).has(PermissionFlagsBits.Connect)) {
+      try {
+        const invites = await newState.channel.fetchInvites();
+        if (!invites.first()) link = `https://discord.gg/${(await newState.channel.createInvite({ maxAge: 0 })).code}`;
+        link = `https://discord.gg/${invites.first().code}`;
+      } catch (error) { }
+    }
 
     const user = await prisma.users.findFirst({ include: { connections: true }, where: { connections: { some: { platform_id: newState.member.id, platform: 'discord' } } } });
     fetch(`${env.GATEWAY_HOST}/user/${user?.id}/update`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ voice: { id: newState.channel.id, name: newState.channel.name, link } }),
+      body: JSON.stringify(newState.channel.permissionsFor(newState.guild.id).has(PermissionFlagsBits.ViewChannel) ? { voice: { id: newState.channel.id, name: newState.channel.name, link } } : { voice: null }),
     }).catch(console.error);
   } else if (oldState.channel != newState.channel && oldState.channel && !newState.channel) {
     await keydb.del(`discord/${oldState.member.id}/voice`);
