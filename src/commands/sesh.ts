@@ -146,6 +146,6 @@ export async function seshCommand(data: CommandInteraction, noMention?: boolean)
     },
   });
 
-  await keydb.set(`discord/commands/smoke`, new Date().getTime(), 'EX', 300);
-  await keydb.set(`discord/commands/smoke/${data.user.id}`, new Date().getTime(), 'EX', 600);
+  await keydb.set(`discord/commands/smoke`, new Date().getTime(), 'EX', 3600);
+  await keydb.set(`discord/commands/smoke/${data.user.id}`, new Date().getTime(), 'EX', 7200);
 }
