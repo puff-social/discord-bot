@@ -1,9 +1,10 @@
 import { keydb } from '@puff-social/commons/dist/connectivity/keydb';
-import { CommandInteraction, PermissionFlagsBits } from 'discord.js';
+import { CommandInteraction, GuildMemberRoleManager, PermissionFlagsBits } from 'discord.js';
 
 import { Channels, Roles, SeshVoiceChannels, DisplayDeviceRolesMap, DeviceRoleColorMap } from '../constants';
 import { incrementUserExperience } from '../utils/experience';
 import { automaticRelativeDifference } from '../utils/time';
+import { setChannelStatus } from '../utils/discord';
 
 export async function seshCommand(data: CommandInteraction, noMention?: boolean) {
   if (!data.channel.permissionsFor(data.guild.id).has(PermissionFlagsBits.ViewChannel)) {
@@ -21,13 +22,17 @@ export async function seshCommand(data: CommandInteraction, noMention?: boolean)
     return;
   }
 
-  if (data.options.get('message') && data.options.get('message')) {
+  const recentlyRun = await keydb.get(`discord/commands/smoke`);
+  const userCooldown = await keydb.get(`discord/commands/smoke/${data.user.id}`);
+  const userSuspended = await keydb.get(`discord/suspensions/smoke/${data.user.id}`);
+
+  if (userSuspended) {
     data.reply({
       embeds: [
         {
           title: 'Error',
           color: 0x213123,
-          description: `This command can only be run in public channels, you did want to smoke with people right?\n*Try again in <#${Channels.General}>*`,
+          description: `Uh oh, you've been suspendeded from using this command, due to the following reason\n\`\`\`\n${userSuspended ?? 'No reason provided.'}\`\`\`\n\nIf believe this was a mistake, contact Dustin, however, it's likely not.`,
           footer: { text: 'puff.social - sesh alerts' },
         },
       ],
@@ -35,9 +40,6 @@ export async function seshCommand(data: CommandInteraction, noMention?: boolean)
     });
     return;
   }
-
-  const recentlyRun = await keydb.get(`discord/commands/smoke`);
-  const userCooldown = await keydb.get(`discord/commands/smoke/${data.user.id}`);
 
   if (userCooldown) {
     const timeLeft = await keydb.ttl(`discord/commands/smoke/${data.user.id}`);
@@ -89,6 +91,24 @@ export async function seshCommand(data: CommandInteraction, noMention?: boolean)
 
   const member = await data.guild.members.fetch(data.user.id);
   if (!member) return;
+
+  if (data.options.get('message')) {
+    if (!data.memberPermissions.has(PermissionFlagsBits.ManageMessages)) return data.reply({
+      embeds: [
+        {
+          title: 'Error',
+          color: 0x213123,
+          description: 'You tried to use this command with the `message` parameter, however this parameter is only for use by staff, try this again without adding the message to properly start the sesh.',
+          footer: { text: 'puff.social - sesh alerts' },
+        },
+      ],
+      ephemeral: true,
+    });
+
+    try {
+      setChannelStatus(member.voice.channel.id, data.options.get('message')?.value as string ?? 'Sesh');
+    } catch (error) { }
+  }
 
   if (!member.roles.resolve(Roles.SeshAlerts.role)) {
     data.reply({

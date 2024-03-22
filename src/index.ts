@@ -17,7 +17,7 @@ import {
   GuildChannel,
 } from 'discord.js';
 
-import { Channels, Roles } from './constants';
+import { Channels, Roles, VoiceChannels } from './constants';
 import { env } from './env';
 import { prisma, prismaDiscord } from './connectivity/prisma';
 import { startVoiceChannelTimer, voiceChannelTimers } from './data';
@@ -43,6 +43,7 @@ import { giveawaysAutoComplete } from './interactions/autocomplete/giveaways';
 import { changeVoiceText, switchSoundboardPermissions } from './helpers/voice';
 import { akinator, akinatorAnswer } from './commands/akinator';
 import { invalidChannel } from './commands/utils';
+import { setChannelStatus } from './utils/discord';
 
 export const client = new Client({
   intents:
@@ -401,6 +402,9 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
   if (oldState.channel != newState.channel) switchSoundboardPermissions(oldState.channel, newState.channel, newState.member.user.id);
 
   if (oldState.channel != newState.channel && newState.channel) {
+    if (newState.channel.id == VoiceChannels.SeshLive && newState.channel.members.size == 1)
+      setChannelStatus(newState.channel.id, 'This channel may be ON-AIR 🔴');
+
     await keydb.set(`discord/${newState.member.id}/voice`, newState.channel.id);
     startVoiceChannelTimer(newState.channel, newState.member.id);
 
