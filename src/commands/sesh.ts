@@ -31,8 +31,8 @@ export async function seshCommand(data: CommandInteraction, noMention?: boolean)
       embeds: [
         {
           title: 'Error',
-          color: 0x213123,
-          description: `Uh oh, you've been suspendeded from using this command, due to the following reason\n\`\`\`\n${userSuspended == "none" ? 'No reason provided.' : userSuspended}\`\`\`\n\nIf believe this was a mistake, contact Dustin, however, it's likely not.`,
+          color: 0xff0000,
+          description: `Uh oh, you've been suspendeded from using this command, due to the following reason:\n\`\`\`\n${userSuspended == "none" ? 'No reason provided.' : userSuspended}\`\`\`\n\nIf you believe this was a mistake, contact Dustin, however, it's likely not.`,
           footer: { text: 'puff.social - sesh alerts' },
         },
       ],
