@@ -1,7 +1,5 @@
 import { keydb } from "@puff-social/commons/dist/connectivity/keydb";
-import { ButtonInteraction, ButtonStyle, ComponentType, NewsChannel, TextChannel } from "discord.js";
-import { client } from "../..";
-import { Channels } from "../../constants";
+import { APIButtonComponent, APIButtonComponentWithCustomId, ActionRow, ActionRowBuilder, ButtonBuilder, ButtonComponent, ButtonInteraction, ButtonStyle, ComponentType, NewsChannel, TextChannel } from "discord.js";
 
 export async function attendingEvent(data: ButtonInteraction) {
   const event_id = data.message.id;
@@ -46,22 +44,19 @@ export async function attendingEvent(data: ButtonInteraction) {
 
     const keys = await keydb.smembers(`event/attendies/${event_id}`);
 
-    await message.edit({
-      embeds: message.embeds, components: [
-        {
-          type: ComponentType.ActionRow,
-          components: [
-            {
-              custom_id: 'event:attend',
-              emoji: { name: '🎈' },
-              label: keys.length.toLocaleString(),
-              style: ButtonStyle.Success,
-              type: ComponentType.Button,
-            },
-          ],
-        },
-      ]
-    });
+    const existingRow = new ActionRowBuilder<ButtonBuilder>(message.components[0]);
+    if (existingRow) {
+      const edited = existingRow.components.filter((comp: ButtonBuilder) => (comp.toJSON() as APIButtonComponentWithCustomId).custom_id != 'event:attend');
+      const buttons: APIButtonComponent[] = [];
+
+      // @ts-ignore (someone doesn't know how to write proper types, type says they should all be on the root object but that's untrue asf)
+      for (const edit of edited) buttons.push(edit.toJSON().data);
+
+      const targetButton = buttons.find((btn: APIButtonComponentWithCustomId) => btn.custom_id == 'event:attend');
+      if (targetButton) targetButton.label = keys.length.toLocaleString();
+
+      await message.edit({ components: [{ type: 1, components: buttons }] });
+    }
   }
 
   data.deferUpdate();
@@ -97,22 +92,19 @@ export async function unattendEvent(data: ButtonInteraction) {
 
     const keys = await keydb.smembers(`event/attendies/${event_id}`);
 
-    await message.edit({
-      embeds: message.embeds, components: [
-        {
-          type: ComponentType.ActionRow,
-          components: [
-            {
-              custom_id: 'event:attend',
-              emoji: { name: '🎈' },
-              label: keys.length.toLocaleString(),
-              style: ButtonStyle.Success,
-              type: ComponentType.Button,
-            },
-          ],
-        },
-      ]
-    });
+    const existingRow = new ActionRowBuilder<ButtonBuilder>(message.components[0]);
+    if (existingRow) {
+      const edited = existingRow.components.filter((comp: ButtonBuilder) => (comp.toJSON() as APIButtonComponentWithCustomId).custom_id != 'event:attend');
+      const buttons: APIButtonComponent[] = [];
+
+      // @ts-ignore (someone doesn't know how to write proper types, type says they should all be on the root object but that's untrue asf)
+      for (const edit of edited) buttons.push(edit.toJSON().data);
+
+      const targetButton = buttons.find((btn: APIButtonComponentWithCustomId) => btn.custom_id == 'event:attend');
+      if (targetButton) targetButton.label = keys.length.toLocaleString();
+
+      await message.edit({ components: [{ type: 1, components: buttons }] });
+    }
   }
 
   data.deferUpdate();
