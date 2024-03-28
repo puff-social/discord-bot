@@ -6,7 +6,7 @@ import { Channels } from "../../constants";
 export async function attendingEvent(data: ButtonInteraction) {
   const event_id = data.message.id;
 
-  if (!await keydb.exists(`event/attendies/${event_id}/started`)) return;
+  if (!await keydb.exists(`event/${event_id}/started`)) return;
 
   if (await keydb.sismember(`event/attendies/${event_id}`, data.user.id))
     return data.reply({
@@ -84,7 +84,7 @@ export async function unattendEvent(data: ButtonInteraction) {
       components: [],
     });
 
-  if (!await keydb.exists(`event/attendies/${event_id}/started`)) return;
+  if (!await keydb.exists(`event/${event_id}/started`)) return;
 
   await keydb.srem(`event/attendies/${event_id}`, data.user.id);
 
