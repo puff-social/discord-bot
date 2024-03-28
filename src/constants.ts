@@ -89,6 +89,7 @@ export const RankRoles: Record<string, { id: string }> = {
 };
 
 export const Channels = {
+  Welcome: env.NODE_ENV == 'production' ? '479770730142236703' : '1163585048621092955',
   Giveaways: env.NODE_ENV == 'production' ? '1152479156571996210' : '1174210048004722758',
   General: env.NODE_ENV == 'production' ? '479780824464490507' : '1174210101125595178',
   Roles: env.NODE_ENV == 'production' ? '1103927473458135121' : '1174210101125595178',

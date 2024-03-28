@@ -44,6 +44,7 @@ import { changeVoiceText, switchSoundboardPermissions } from './helpers/voice';
 import { akinator, akinatorAnswer } from './commands/akinator';
 import { invalidChannel } from './commands/utils';
 import { setChannelStatus } from './utils/discord';
+import { attendingEvent, unattendEvent } from './interactions/buttons/events';
 
 export const client = new Client({
   intents:
@@ -243,6 +244,12 @@ client.on('interactionCreate', async (data) => {
         break;
       case 'giveaway-already-entered:leave':
         leaveGiveaway(data);
+        break;
+      case 'event:attend':
+        attendingEvent(data);
+        break;
+      case 'event:unattend':
+        unattendEvent(data);
         break;
 
       default: {
