@@ -21,8 +21,9 @@ export async function changeVoiceText(id: string, user: string) {
 }
 
 export async function switchSoundboardPermissions(oldChannel: Channel, newChannel: Channel, user: string) {
+  if (oldChannel && oldChannel instanceof VoiceChannel) await oldChannel.permissionOverwrites.delete(user);
+
   if ((oldChannel instanceof VoiceChannel) && !oldChannel.permissionsFor(BotRole).has(PermissionFlagsBits.UseSoundboard)) {
-    if (oldChannel && oldChannel instanceof VoiceChannel) await oldChannel.permissionOverwrites.delete(user);
     setTimeout(async () => {
       if (newChannel && newChannel instanceof VoiceChannel) await newChannel.permissionOverwrites.create(user, {
         UseSoundboard: true
