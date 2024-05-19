@@ -157,8 +157,8 @@ client.on('guildMemberRemove', async (member) => {
     }
   }
 
-  // Delete the user and their level from the database, they literally don't deserve to keep if they leave.
-  await prisma.discord_users.delete({ where: { id: member.user.id } });
+  // Delete the user and their level from the database, they left, so they should be reset. Gang meets gang.
+  await prisma.discord_users.delete({ where: { id: member.user.id } }).catch(() => { });
 });
 
 client.on('guildMemberUpdate', async (oldMember, member) => {
