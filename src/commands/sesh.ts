@@ -1,5 +1,5 @@
 import { keydb } from '@puff-social/commons/dist/connectivity/keydb';
-import { CommandInteraction, GuildMemberRoleManager, PermissionFlagsBits } from 'discord.js';
+import { ChannelType, CommandInteraction, GuildMemberRoleManager, PermissionFlagsBits } from 'discord.js';
 
 import { Channels, Roles, SeshVoiceChannels, DisplayDeviceRolesMap, DeviceRoleColorMap } from '../constants';
 import { incrementUserExperience } from '../utils/experience';
@@ -14,6 +14,21 @@ export async function seshCommand(data: CommandInteraction, noMention?: boolean)
           title: 'Error',
           color: 0x213123,
           description: `This command can only be run in public channels, you did want to smoke with people right?\n*Try again in <#${Channels.General}>*`,
+          footer: { text: 'puff.social - sesh alerts' },
+        },
+      ],
+      ephemeral: true,
+    });
+    return;
+  }
+
+  if (data.channel.type == ChannelType.GuildVoice) {
+    data.reply({
+      embeds: [
+        {
+          title: 'Error',
+          color: 0x213123,
+          description: `This command can only be run in text channels, whilst this is a public channel it's not the one you should use this command in.\n*Try again in <#${Channels.General}>*`,
           footer: { text: 'puff.social - sesh alerts' },
         },
       ],
