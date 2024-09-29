@@ -24,7 +24,7 @@ export const displayDeviceEmbed = {
   title: 'Display device roles',
   url: 'https://puff.social',
   description:
-    "If you want to display your device icon next to your name in chat you can pick one with the buttons below\n\n*You must have the corosponding device role from connecting your device first*\n\n*This will overwrite your existing icons (for example if you're a supporter)*",
+    "If you want to display your device icon next to your name in chat you can pick one with the buttons below\n\n*You must have the corosponding device role from connecting your device first*\n\n*This will overwrite your existing icons (for example if you're a supporter)*\n*This only works when the discord has Level 2 from boosts, so if you want this, boost the server :)*",
   color: 0xff00b3,
   footer: {
     text: 'puff.social - display roles',
