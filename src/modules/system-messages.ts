@@ -84,12 +84,12 @@ export async function updateOrSendMessages() {
       const embedComponents: APIActionRowComponent<APIMessageActionRowComponent>[] = [
         {
           type: ComponentType.ActionRow,
-          components: [...displayDeviceComponents.slice(0, 4)],
+          components: [...displayDeviceComponents.slice(0, 5)],
         },
         {
           type: ComponentType.ActionRow,
           components: [
-            ...displayDeviceComponents.slice(4),
+            ...displayDeviceComponents.slice(5),
             {
               type: ComponentType.Button,
               style: ButtonStyle.Secondary,

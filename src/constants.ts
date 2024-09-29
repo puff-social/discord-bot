@@ -10,6 +10,7 @@ export const AllowedRolesMap: Record<string, { role: string; name: string }> = {
   '1115372382786441277': { role: '1115370368731987990', name: 'Onyx' },
   '1162214735798866001': { role: '1162214606379417730', name: 'Desert' },
   '1214788302931103764': { role: '1214787209471987723', name: 'Flourish' },
+  '1290017011421937704': { role: '1290016309912014849', name: 'Storm' },
 };
 
 export const DeviceRoleColorMap: Record<string, number> = {
@@ -21,6 +22,7 @@ export const DeviceRoleColorMap: Record<string, number> = {
   '1115372382786441277': parseInt(DeviceModelColors.PeachBlack.slice(1), 16),
   '1162214735798866001': parseInt(DeviceModelColors.Desert.slice(1), 16),
   '1214788302931103764': parseInt(DeviceModelColors.Flourish.slice(1), 16),
+  '1290017011421937704': parseInt(DeviceModelColors.Storm.slice(1), 16),
 };
 
 export const DisplayDeviceRolesMap = {
@@ -31,7 +33,8 @@ export const DisplayDeviceRolesMap = {
   'puffco-onyx': '1115372382786441277',
   'puffco-pearl': '1115372397361635479',
   'puffco-desert': '1162214735798866001',
-  'puffco-flourish': '1214788302931103764'
+  'puffco-flourish': '1214788302931103764',
+  'puffco-storm': '1290017011421937704',
 };
 
 export const DeviceDisplayButtons = {
@@ -43,6 +46,7 @@ export const DeviceDisplayButtons = {
   onyx: { name: 'Onyx', emoji: { name: 'onyx', id: '1115367196781203578' }, action: 'puffco-onyx' },
   desert: { name: 'Desert', emoji: { name: 'desert', id: '1162214566831333376' }, action: 'puffco-desert' },
   flourish: { name: 'Flourish', emoji: { name: 'flourish', id: '1214787175141609522' }, action: 'puffco-flourish' },
+  storm: { name: 'Storm', emoji: { name: 'storm', id: '1289867368436334664' }, action: 'puffco-storm' },
 };
 
 export const ProductModelMap = {
@@ -53,8 +57,9 @@ export const ProductModelMap = {
   '22': { name: 'Opal', emoji: `<:opal:${DeviceDisplayButtons.opal.emoji.id}>`, role: '1091534067410935838' },
   '2': { name: 'Indiglow', emoji: `<:indiglow:${DeviceDisplayButtons.indiglow.emoji.id}>`, role: '1091533939534999572' },
   '4': { name: 'Guardian', emoji: `<:guardian:${DeviceDisplayButtons.guardian.emoji.id}>`, role: '1091534018207551601' },
-  '13': { name: 'Onyx', emoji: `<:onyx:${DeviceDisplayButtons.onyx.emoji.id}>`, role: '1115370368731987990' },
+  '26': { name: 'Guardian', emoji: `<:guardian:${DeviceDisplayButtons.guardian.emoji.id}>`, role: '1091534018207551601' },
   '12': { name: 'Pearl', emoji: `<:pearl:${DeviceDisplayButtons.pearl.emoji.id}>`, role: '1115370363778515027' },
+  '13': { name: 'Onyx', emoji: `<:onyx:${DeviceDisplayButtons.onyx.emoji.id}>`, role: '1115370368731987990' },
   '51': { name: 'Peak', emoji: `<:peak:${DeviceDisplayButtons.peak.emoji.id}>`, role: '1091533760119443536' },
   '71': { name: 'Onyx', emoji: `<:onyx:${DeviceDisplayButtons.onyx.emoji.id}>`, role: '1115370368731987990' },
   '72': { name: 'Pearl', emoji: `<:pearl:${DeviceDisplayButtons.pearl.emoji.id}>`, role: '1115370363778515027' },
@@ -62,6 +67,10 @@ export const ProductModelMap = {
   '74': { name: 'Desert', emoji: `<:desert:${DeviceDisplayButtons.desert.emoji.id}>`, role: '1162214606379417730' },
   '17': { name: 'Flourish', emoji: `<:flourish:${DeviceDisplayButtons.flourish.emoji.id}>`, role: '1214787209471987723' },
   '75': { name: 'Flourish', emoji: `<:flourish:${DeviceDisplayButtons.flourish.emoji.id}>`, role: '1214787209471987723' },
+  '19': { name: 'Storm', emoji: `<:storm:${DeviceDisplayButtons.storm.emoji.id}>`, role: '1290016309912014849' },
+  '78': { name: 'Storm', emoji: `<:storm:${DeviceDisplayButtons.storm.emoji.id}>`, role: '1290016309912014849' },
+  '79': { name: 'Onyx', emoji: `<:onyx:${DeviceDisplayButtons.onyx.emoji.id}>`, role: '1115370368731987990' },
+  '80': { name: 'Pearl', emoji: `<:pearl:${DeviceDisplayButtons.pearl.emoji.id}>`, role: '1115370363778515027' },
 };
 
 export const Roles = {
@@ -169,12 +178,12 @@ export const Rules = [
   '1️⃣. As this server relates to cannabis consumption, you must be 21+ years old to be present in this server, if we find out otherwise you will be banned without question.',
   "2️⃣. Respect your fellow members, we're all here for the same thing, treat others as though you would want to be treated.",
   '3️⃣. Advertising is strictly prohibited, chances are if you have to advertise it here nobody wants it anyway.' +
-  '\n*(This rule has some exceptions if you offer/make puffco related products or services)*',
+    '\n*(This rule has some exceptions if you offer/make puffco related products or services)*',
   "4️⃣. We don't allow any type of NSFW content in this server, keep it anywhere but here.",
   '5️⃣. Spamming chats or mic spamming in voice channels is prohibited.',
   "6️⃣. Follow Discord ToS as we're required to enforce those here.",
   "7️⃣. Currently we're only able to moderate english, so only english is permitted in the chats.",
   "8️⃣. Don't ask for roles or permissions.",
-  '9️⃣. Be courteous to users in the voice channels by not recording or live streaming them.\n*(Referring to external sources, not like discord live)*\n*(Certain channels may exist for this over time)*',
+  "9️⃣. Be courteous to users in the voice channels by not recording or live streaming them unless you're in the dedicated live channel",
   "🔟. Don't be a troll, if you have to question that something might fall under this rule you need to reconsider your current thought.",
 ];
