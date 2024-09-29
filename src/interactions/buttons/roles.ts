@@ -1,5 +1,5 @@
 import { ButtonInteraction, ButtonStyle, ComponentType } from 'discord.js';
-import { DisplayDeviceRolesMap, AllowedRolesMap, ColorRoles } from '../../constants';
+import { DisplayDeviceRolesMap, AllowedRolesMap, ColorRoles, DeviceDisplayButtons } from '../../constants';
 
 export async function displayDeviceRole(data: ButtonInteraction) {
   const [, roleActionId] = data.customId.split(':');
@@ -27,7 +27,7 @@ export async function displayDeviceRole(data: ButtonInteraction) {
               type: ComponentType.Button,
               style: ButtonStyle.Link,
               label: 'Open puff.social',
-              emoji: { id: '1090799054428065894', name: 'peak' },
+              emoji: DeviceDisplayButtons.onyx.emoji,
               url: 'https://puff.social',
             },
           ],

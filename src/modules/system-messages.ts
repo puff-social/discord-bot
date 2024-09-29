@@ -56,7 +56,7 @@ export async function updateOrSendMessages() {
             type: ComponentType.Button,
             style: ButtonStyle.Link,
             label: 'Open puff.social',
-            emoji: { id: '1090799054428065894', name: 'peak' },
+            emoji: DeviceDisplayButtons.onyx.emoji,
             url: 'https://puff.social',
           },
         ],
