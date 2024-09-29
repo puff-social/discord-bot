@@ -158,14 +158,11 @@ client.on('guildMemberRemove', async (member) => {
   }
 
   // Delete the user and their level from the database, they left, so they should be reset. Gang meets gang.
-  await prisma.discord_users.delete({ where: { id: member.user.id } }).catch(() => { });
+  await prisma.discord_users.delete({ where: { id: member.user.id } }).catch(() => {});
 });
 
 client.on('guildMemberUpdate', async (oldMember, member) => {
-  if (
-    member.nickname?.startsWith('!') &&
-    member.nickname != member.user.displayName
-  ) member.setNickname(member.nickname.replace(/^!+(?=[a-zA-Z])/, ''))
+  if (member.nickname?.startsWith('!') && member.nickname != member.user.displayName) member.setNickname(member.nickname.replace(/^!+(?=[a-zA-Z])/, ''));
 });
 
 client.on('messageReactionAdd', async (data, reactor) => {
@@ -201,35 +198,15 @@ client.on('messageReactionRemove', async (data, reactor) => {
 
 client.on('interactionCreate', async (data) => {
   if (data instanceof ButtonInteraction) {
+    if (data.customId.startsWith('device-role:')) {
+      if (data.customId.endsWith(':none')) return await clearDisplayDeviceRole(data);
+      return await displayDeviceRole(data);
+    } else if (data.customId.startsWith('color-role:')) {
+      if (data.customId.endsWith(':none')) return await clearColorRoles(data);
+      return await colorRole(data);
+    }
+
     switch (data.customId) {
-      case 'device-role:puffco-peak-pro':
-      case 'device-role:puffco-opal':
-      case 'device-role:puffco-indiglow':
-      case 'device-role:puffco-guardian':
-      case 'device-role:puffco-pearl':
-      case 'device-role:puffco-onyx':
-      case 'device-role:puffco-desert':
-      case 'device-role:puffco-flourish':
-        displayDeviceRole(data);
-        break;
-      case 'device-role:none':
-        clearDisplayDeviceRole(data);
-        break;
-
-      case 'color-role:purple':
-      case 'color-role:blue':
-      case 'color-role:green':
-      case 'color-role:yellow':
-      case 'color-role:orange':
-      case 'color-role:red':
-      case 'color-role:brown':
-      case 'color-role:black':
-        colorRole(data);
-        break;
-      case 'color-role:none':
-        clearColorRoles(data);
-        break;
-
       case 'giveaway-create:start':
         startGiveaway(data);
         break;
@@ -309,10 +286,8 @@ client.on('interactionCreate', async (data) => {
         break;
 
       case 'akinator':
-        if (data.channel.id == Channels.RanksNBots)
-          akinator(data as ChatInputCommandInteraction);
-        else
-          invalidChannel(Channels.RanksNBots, data);
+        if (data.channel.id == Channels.RanksNBots) akinator(data as ChatInputCommandInteraction);
+        else invalidChannel(Channels.RanksNBots, data);
         break;
     }
   } else if (data instanceof AutocompleteInteraction) {
@@ -409,8 +384,7 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
   if (oldState.channel != newState.channel) switchSoundboardPermissions(oldState.channel, newState.channel, newState.member.user.id);
 
   if (oldState.channel != newState.channel && newState.channel) {
-    if (newState.channel.id == VoiceChannels.SeshLive && newState.channel.members.size == 1)
-      setChannelStatus(newState.channel.id, 'This channel may be ON-AIR 🔴');
+    if (newState.channel.id == VoiceChannels.SeshLive && newState.channel.members.size == 1) setChannelStatus(newState.channel.id, 'This channel may be ON-AIR 🔴');
 
     await keydb.set(`discord/${newState.member.id}/voice`, newState.channel.id);
     startVoiceChannelTimer(newState.channel, newState.member.id);
@@ -421,14 +395,18 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
         const invites = await newState.channel.fetchInvites();
         if (!invites.first()) link = `https://discord.gg/${(await newState.channel.createInvite({ maxAge: 0 })).code}`;
         link = `https://discord.gg/${invites.first().code}`;
-      } catch (error) { }
+      } catch (error) {}
     }
 
     const user = await prisma.users.findFirst({ include: { connections: true }, where: { connections: { some: { platform_id: newState.member.id, platform: 'discord' } } } });
     fetch(`${env.GATEWAY_HOST}/user/${user?.id}/update`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(newState.channel.permissionsFor(newState.guild.id).has(PermissionFlagsBits.ViewChannel) ? { voice: { id: newState.channel.id, name: newState.channel.name, link } } : { voice: null }),
+      body: JSON.stringify(
+        newState.channel.permissionsFor(newState.guild.id).has(PermissionFlagsBits.ViewChannel)
+          ? { voice: { id: newState.channel.id, name: newState.channel.name, link } }
+          : { voice: null },
+      ),
     }).catch(console.error);
   } else if (oldState.channel != newState.channel && oldState.channel && !newState.channel) {
     await keydb.del(`discord/${oldState.member.id}/voice`);
