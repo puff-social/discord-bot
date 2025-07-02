@@ -88,8 +88,12 @@ export async function updateOrSendMessages() {
         },
         {
           type: ComponentType.ActionRow,
+          components: [...displayDeviceComponents.slice(5, 10)],
+        },
+        {
+          type: ComponentType.ActionRow,
           components: [
-            ...displayDeviceComponents.slice(5),
+            ...displayDeviceComponents.slice(10),
             {
               type: ComponentType.Button,
               style: ButtonStyle.Secondary,
