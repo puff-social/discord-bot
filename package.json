@@ -14,6 +14,14 @@
     "prisma:pull": "(cd discord-db && prisma db pull) && (cd db && prisma db pull)",
     "postinstall": "cp -R node_modules/.pnpm/node_extra_ca_certs_mozilla_bundle*/node_modules/node_extra_ca_certs_mozilla_bundle node_modules/node_extra_ca_certs_mozilla_bundle 2>/dev/null || :"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "node_extra_ca_certs_mozilla_bundle",
+      "prisma"
+    ]
+  },
   "devDependencies": {
     "@types/node": "^18.0.4",
     "@types/ws": "^8.5.3",
