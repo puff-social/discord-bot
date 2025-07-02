@@ -11,6 +11,7 @@ export const AllowedRolesMap: Record<string, { role: string; name: string }> = {
   '1162214735798866001': { role: '1162214606379417730', name: 'Desert' },
   '1214788302931103764': { role: '1214787209471987723', name: 'Flourish' },
   '1290017011421937704': { role: '1290016309912014849', name: 'Storm' },
+  '1390047279356051576': { role: '1390047044634153073', name: 'Daybreak' },
 };
 
 export const DeviceRoleColorMap: Record<string, number> = {
@@ -23,6 +24,7 @@ export const DeviceRoleColorMap: Record<string, number> = {
   '1162214735798866001': parseInt(DeviceModelColors.Desert.slice(1), 16),
   '1214788302931103764': parseInt(DeviceModelColors.Flourish.slice(1), 16),
   '1290017011421937704': parseInt(DeviceModelColors.Storm.slice(1), 16),
+  '1390047279356051576': parseInt(DeviceModelColors.Daybreak.slice(1), 16),
 };
 
 export const DisplayDeviceRolesMap = {
@@ -35,6 +37,7 @@ export const DisplayDeviceRolesMap = {
   'puffco-desert': '1162214735798866001',
   'puffco-flourish': '1214788302931103764',
   'puffco-storm': '1290017011421937704',
+  'puffco-daybreak': '1390047279356051576',
 };
 
 export const DeviceDisplayButtons = {
@@ -47,6 +50,7 @@ export const DeviceDisplayButtons = {
   desert: { name: 'Desert', emoji: { name: 'desert', id: '1162214566831333376' }, action: 'puffco-desert' },
   flourish: { name: 'Flourish', emoji: { name: 'flourish', id: '1214787175141609522' }, action: 'puffco-flourish' },
   storm: { name: 'Storm', emoji: { name: 'storm', id: '1289867368436334664' }, action: 'puffco-storm' },
+  daybreak: { name: 'Daybreak', emoji: { name: 'storm', id: '1390048217810337952' }, action: 'puffco-daybreak' },
 };
 
 export const ProductModelMap = {
@@ -71,6 +75,8 @@ export const ProductModelMap = {
   '78': { name: 'Storm', emoji: `<:storm:${DeviceDisplayButtons.storm.emoji.id}>`, role: '1290016309912014849' },
   '79': { name: 'Onyx', emoji: `<:onyx:${DeviceDisplayButtons.onyx.emoji.id}>`, role: '1115370368731987990' },
   '80': { name: 'Pearl', emoji: `<:pearl:${DeviceDisplayButtons.pearl.emoji.id}>`, role: '1115370363778515027' },
+  '23': { name: 'Daybreak', emoji: `<:daybreak:${DeviceDisplayButtons.daybreak.emoji.id}>`, role: '1390047044634153073' },
+  '81': { name: 'Daybreak', emoji: `<:daybreak:${DeviceDisplayButtons.daybreak.emoji.id}>`, role: '1390047044634153073' },
 };
 
 export const Roles = {
