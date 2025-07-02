@@ -47,7 +47,7 @@ export async function seshCommand(data: CommandInteraction, noMention?: boolean)
         {
           title: 'Error',
           color: 0xff0000,
-          description: `Uh oh, you've been suspended from using this command, due to the following reason:\n\`\`\`\n${userSuspended == "none" ? 'No reason provided.' : userSuspended}\`\`\`\n\nIf you believe this was a mistake, contact Dustin, however, it's likely not.`,
+          description: `Uh oh, you've been suspended from using this command, due to the following reason:\n\`\`\`\n${userSuspended == 'none' ? 'No reason provided.' : userSuspended}\`\`\`\n\nIf you believe this was a mistake, contact Dustin, however, it's likely not.`,
           footer: { text: 'puff.social - sesh alerts' },
         },
       ],
@@ -107,22 +107,24 @@ export async function seshCommand(data: CommandInteraction, noMention?: boolean)
   const member = await data.guild.members.fetch(data.user.id);
   if (!member) return;
 
-  if (data.options.get('message')) {
-    if (!data.memberPermissions.has(PermissionFlagsBits.ManageMessages)) return data.reply({
-      embeds: [
-        {
-          title: 'Error',
-          color: 0x213123,
-          description: 'You tried to use this command with the `message` parameter, however this parameter is only for use by staff, try this again without adding the message to properly start the sesh.',
-          footer: { text: 'puff.social - sesh alerts' },
-        },
-      ],
-      ephemeral: true,
-    });
+  if (data.isChatInputCommand() && data.options.get('message')) {
+    if (!data.memberPermissions.has(PermissionFlagsBits.ManageMessages))
+      return data.reply({
+        embeds: [
+          {
+            title: 'Error',
+            color: 0x213123,
+            description:
+              'You tried to use this command with the `message` parameter, however this parameter is only for use by staff, try this again without adding the message to properly start the sesh.',
+            footer: { text: 'puff.social - sesh alerts' },
+          },
+        ],
+        ephemeral: true,
+      });
 
     try {
-      setChannelStatus(member.voice.channel.id, data.options.get('message')?.value as string ?? 'Sesh');
-    } catch (error) { }
+      setChannelStatus(member.voice.channel.id, (data.options.get('message')?.value as string) ?? 'Sesh');
+    } catch (error) {}
   }
 
   if (!member.roles.resolve(Roles.SeshAlerts.role)) {
@@ -163,23 +165,24 @@ export async function seshCommand(data: CommandInteraction, noMention?: boolean)
   await incrementUserExperience(data.user.id, Math.floor(Math.random() * 5) + 7);
 
   (await data.deferReply()).delete();
-  if (!noMention) await data.channel.send({
-    embeds: [
-      {
-        color,
-        title: 'Time to sesh!',
-        author: { name: data.user.username, icon_url: member.displayAvatarURL() },
-        description: `${data.user.username} is tryna to get a sesh going, hop on in with them and take some dabs!\n<#${member.voice.channel.id}>`,
-        footer: { text: 'puff.social - sesh alerts' },
-        timestamp: new Date().toISOString(),
+  if (!noMention && data.isChatInputCommand())
+    await data.channel.send({
+      embeds: [
+        {
+          color,
+          title: 'Time to sesh!',
+          author: { name: data.user.username, icon_url: member.displayAvatarURL() },
+          description: `${data.user.username} is tryna to get a sesh going, hop on in with them and take some dabs!\n<#${member.voice.channel.id}>`,
+          footer: { text: 'puff.social - sesh alerts' },
+          timestamp: new Date().toISOString(),
+        },
+      ],
+      content: `<@&${Roles.SeshAlerts.role}>: <@${data.user.id}> is tryna sesh up${data.options.get('message') ? `- ${data.options.get('message')}` : ''}`,
+      allowedMentions: {
+        roles: [Roles.SeshAlerts.role],
+        users: [data.user.id],
       },
-    ],
-    content: `<@&${Roles.SeshAlerts.role}>: <@${data.user.id}> is tryna sesh up${data.options.get('message') ? `- ${data.options.get('message')}` : ''}`,
-    allowedMentions: {
-      roles: [Roles.SeshAlerts.role],
-      users: [data.user.id]
-    },
-  });
+    });
 
   await keydb.set(`discord/commands/smoke`, new Date().getTime(), 'EX', 3600 * 3);
   await keydb.set(`discord/commands/smoke/${data.user.id}`, new Date().getTime(), 'EX', 3600 * 5);

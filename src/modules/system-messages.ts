@@ -1,4 +1,4 @@
-import { TextChannel, APIActionRowComponent, APIMessageActionRowComponent, ComponentType, ButtonStyle, ActivityType } from 'discord.js';
+import { TextChannel, APIActionRowComponent, ComponentType, ButtonStyle, ActivityType, ActionRow, ButtonComponent, APIButtonComponent } from 'discord.js';
 
 import { client } from '..';
 import { Roles, DeviceDisplayButtons, ColorRoles } from '../constants';
@@ -49,7 +49,7 @@ export async function updateOrSendMessages() {
       }
 
       const devicesRolesMessage = messages.find((msg) => msg.embeds?.[0]?.title == 'Show off your device');
-      const devicesRolesComponent: APIActionRowComponent<APIMessageActionRowComponent> = {
+      const devicesRolesComponent: APIActionRowComponent<APIButtonComponent> = {
         type: ComponentType.ActionRow,
         components: [
           {
@@ -74,14 +74,14 @@ export async function updateOrSendMessages() {
       }
 
       const displayDeviceRole = messages.find((msg) => msg.embeds?.[0]?.title == 'Display device roles');
-      const displayDeviceComponents: APIMessageActionRowComponent[] = Object.values(DeviceDisplayButtons).map((dev) => ({
+      const displayDeviceComponents: APIButtonComponent[] = Object.values(DeviceDisplayButtons).map((dev) => ({
         type: ComponentType.Button,
         style: ButtonStyle.Primary,
         label: dev.name,
         emoji: dev.emoji,
         custom_id: `device-role:${dev.action}`,
       }));
-      const embedComponents: APIActionRowComponent<APIMessageActionRowComponent>[] = [
+      const embedComponents: APIActionRowComponent<APIButtonComponent>[] = [
         {
           type: ComponentType.ActionRow,
           components: [...displayDeviceComponents.slice(0, 5)],
@@ -112,14 +112,14 @@ export async function updateOrSendMessages() {
       }
 
       const colorRole = messages.find((msg) => msg.embeds?.[0]?.title == 'Choose a Color');
-      const colorRoleComponents: APIMessageActionRowComponent[] = Object.keys(ColorRoles).map((key) => ({
+      const colorRoleComponents: APIButtonComponent[] = Object.keys(ColorRoles).map((key) => ({
         type: ComponentType.Button,
         style: ButtonStyle.Primary,
         label: ColorRoles[key].name,
         emoji: { name: ColorRoles[key].emoji },
         custom_id: `color-role:${key}`,
       }));
-      const colorRoleComponent: APIActionRowComponent<APIMessageActionRowComponent>[] = [
+      const colorRoleComponent: APIActionRowComponent<APIButtonComponent>[] = [
         {
           type: ComponentType.ActionRow,
           components: colorRoleComponents.slice(0, 4),
