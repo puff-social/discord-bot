@@ -37,6 +37,7 @@ export async function updateOrSendMessages() {
         await message.react(Roles.SiteUpdates.emoji);
         await message.react(Roles.ServerAnnouncements.emoji);
         await message.react(Roles.Giveaways.emoji);
+        await message.react(Roles.LiveNotifications.emoji);
       } else {
         await generalRolesMessage.edit({
           embeds: [generalRolesEmbed],
@@ -46,6 +47,7 @@ export async function updateOrSendMessages() {
         if (!generalRolesMessage.reactions.resolve(Roles.SiteUpdates.emoji)) await generalRolesMessage.react(Roles.SiteUpdates.emoji);
         if (!generalRolesMessage.reactions.resolve(Roles.ServerAnnouncements.emoji)) await generalRolesMessage.react(Roles.ServerAnnouncements.emoji);
         if (!generalRolesMessage.reactions.resolve(Roles.Giveaways.emoji)) await generalRolesMessage.react(Roles.Giveaways.emoji);
+        if (!generalRolesMessage.reactions.resolve(Roles.LiveNotifications.emoji)) await generalRolesMessage.react(Roles.LiveNotifications.emoji);
       }
 
       const devicesRolesMessage = messages.find((msg) => msg.embeds?.[0]?.title == 'Show off your device');

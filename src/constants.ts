@@ -86,6 +86,7 @@ export const Roles = {
   SeshAlerts: { role: env.NODE_ENV == 'production' ? '1100653810935930951' : '1199528232169513000', emoji: '🌿' },
   SiteUpdates: { role: '1100653692983717940', emoji: '📝' },
   ServerAnnouncements: { role: '1103917695864410242', emoji: '📢' },
+  LiveNotifications: { role: '1508232237127176212', emoji: '🔴' },
 };
 
 export const VoiceTickers = {
