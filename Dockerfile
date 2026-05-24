@@ -1,4 +1,4 @@
-FROM node:18 AS builder
+FROM node:24 AS builder
 
 ARG NPM_CONFIG_USERCONFIG
 ARG NPM_TOKEN
@@ -15,7 +15,7 @@ RUN pnpm prisma
 COPY . .
 RUN pnpm build
 
-FROM node:18
+FROM node:24
 
 RUN yarn global add pnpm
 
