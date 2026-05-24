@@ -1,2 +1,6 @@
 @puff-social:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${NPM_TOKEN}
+only-built-dependencies[]=@prisma/client
+only-built-dependencies[]= @prisma/engines
+only-built-dependencies[]=prisma
+only-built-dependencies[]=node_extra_ca_certs_mozilla_bundle
