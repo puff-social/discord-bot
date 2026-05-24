@@ -9,6 +9,7 @@ COPY discord-db ./discord-db
 COPY db ./db
 
 RUN yarn global add pnpm
+RUN pnpm config set only-built-dependencies @prisma/client @prisma/engines prisma node_extra_ca_certs_mozilla_bundle
 RUN pnpm install
 RUN pnpm prisma
 
