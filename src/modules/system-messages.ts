@@ -50,72 +50,72 @@ export async function updateOrSendMessages() {
         if (!generalRolesMessage.reactions.resolve(Roles.LiveNotifications.emoji)) await generalRolesMessage.react(Roles.LiveNotifications.emoji);
       }
 
-      const devicesRolesMessage = messages.find((msg) => msg.embeds?.[0]?.title == 'Show off your device');
-      const devicesRolesComponent: APIActionRowComponent<APIButtonComponent> = {
-        type: ComponentType.ActionRow,
-        components: [
-          {
-            type: ComponentType.Button,
-            style: ButtonStyle.Link,
-            label: 'Open puff.social',
-            emoji: DeviceDisplayButtons.onyx.emoji,
-            url: 'https://puff.social',
-          },
-        ],
-      };
-      if (!devicesRolesMessage) {
-        await roleChannel.send({
-          embeds: [devicesRolesEmbed],
-          components: [devicesRolesComponent],
-        });
-      } else {
-        await devicesRolesMessage.edit({
-          embeds: [devicesRolesEmbed],
-          components: [devicesRolesComponent],
-        });
-      }
+      // const devicesRolesMessage = messages.find((msg) => msg.embeds?.[0]?.title == 'Show off your device');
+      // const devicesRolesComponent: APIActionRowComponent<APIButtonComponent> = {
+      //   type: ComponentType.ActionRow,
+      //   components: [
+      //     {
+      //       type: ComponentType.Button,
+      //       style: ButtonStyle.Link,
+      //       label: 'Open puff.social',
+      //       emoji: DeviceDisplayButtons.onyx.emoji,
+      //       url: 'https://puff.social',
+      //     },
+      //   ],
+      // };
+      // if (!devicesRolesMessage) {
+      //   await roleChannel.send({
+      //     embeds: [devicesRolesEmbed],
+      //     components: [devicesRolesComponent],
+      //   });
+      // } else {
+      //   await devicesRolesMessage.edit({
+      //     embeds: [devicesRolesEmbed],
+      //     components: [devicesRolesComponent],
+      //   });
+      // }
 
-      const displayDeviceRole = messages.find((msg) => msg.embeds?.[0]?.title == 'Display device roles');
-      const displayDeviceComponents: APIButtonComponent[] = Object.values(DeviceDisplayButtons).map((dev) => ({
-        type: ComponentType.Button,
-        style: ButtonStyle.Primary,
-        label: dev.name,
-        emoji: dev.emoji,
-        custom_id: `device-role:${dev.action}`,
-      }));
-      const embedComponents: APIActionRowComponent<APIButtonComponent>[] = [
-        {
-          type: ComponentType.ActionRow,
-          components: [...displayDeviceComponents.slice(0, 5)],
-        },
-        {
-          type: ComponentType.ActionRow,
-          components: [...displayDeviceComponents.slice(5, 10)],
-        },
-        {
-          type: ComponentType.ActionRow,
-          components: [
-            ...displayDeviceComponents.slice(10),
-            {
-              type: ComponentType.Button,
-              style: ButtonStyle.Secondary,
-              label: 'None',
-              custom_id: `device-role:none`,
-            },
-          ],
-        },
-      ];
-      if (!displayDeviceRole) {
-        await roleChannel.send({
-          embeds: [displayDeviceEmbed],
-          components: embedComponents,
-        });
-      } else {
-        await displayDeviceRole.edit({
-          embeds: [displayDeviceEmbed],
-          components: embedComponents,
-        });
-      }
+      // const displayDeviceRole = messages.find((msg) => msg.embeds?.[0]?.title == 'Display device roles');
+      // const displayDeviceComponents: APIButtonComponent[] = Object.values(DeviceDisplayButtons).map((dev) => ({
+      //   type: ComponentType.Button,
+      //   style: ButtonStyle.Primary,
+      //   label: dev.name,
+      //   emoji: dev.emoji,
+      //   custom_id: `device-role:${dev.action}`,
+      // }));
+      // const embedComponents: APIActionRowComponent<APIButtonComponent>[] = [
+      //   {
+      //     type: ComponentType.ActionRow,
+      //     components: [...displayDeviceComponents.slice(0, 5)],
+      //   },
+      //   {
+      //     type: ComponentType.ActionRow,
+      //     components: [...displayDeviceComponents.slice(5, 10)],
+      //   },
+      //   {
+      //     type: ComponentType.ActionRow,
+      //     components: [
+      //       ...displayDeviceComponents.slice(10),
+      //       {
+      //         type: ComponentType.Button,
+      //         style: ButtonStyle.Secondary,
+      //         label: 'None',
+      //         custom_id: `device-role:none`,
+      //       },
+      //     ],
+      //   },
+      // ];
+      // if (!displayDeviceRole) {
+      //   await roleChannel.send({
+      //     embeds: [displayDeviceEmbed],
+      //     components: embedComponents,
+      //   });
+      // } else {
+      //   await displayDeviceRole.edit({
+      //     embeds: [displayDeviceEmbed],
+      //     components: embedComponents,
+      //   });
+      // }
 
       const colorRole = messages.find((msg) => msg.embeds?.[0]?.title == 'Choose a Color');
       const colorRoleComponents: APIButtonComponent[] = Object.keys(ColorRoles).map((key) => ({
