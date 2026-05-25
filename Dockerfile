@@ -10,7 +10,8 @@ COPY db ./db
 
 RUN yarn global add pnpm
 RUN pnpm config set side-effects-cache false
-RUN pnpm install --ignore-scripts
+
+RUN pnpm install --no-verify-store-integrity --ignore-scripts
 RUN pnpm prisma
 
 COPY . .
