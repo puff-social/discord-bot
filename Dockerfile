@@ -1,34 +1,24 @@
-FROM node:24 AS builder
+FROM oven/bun:latest
+
+RUN apt update
+RUN apt install curl -y
 
 ARG NPM_CONFIG_USERCONFIG
 ARG NPM_TOKEN
 
 WORKDIR /app
-COPY .npmrc.ci package*.json pnpm-lock.yaml ./
+COPY .npmrc.ci .bunfig.toml package*.json bun.lock ./
 COPY discord-db ./discord-db
 COPY db ./db
 
-COPY .npmrc.ci .npmrc
-RUN yarn global add pnpm
-RUN pnpm config set side-effects-cache false
+RUN cp .npmrc.ci .npmrc
+RUN bun install
 
-RUN pnpm install --no-verify-store-integrity --ignore-scripts
-RUN pnpm prisma
+RUN mkdir -p node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ && \
+    curl -L https://curl.se/ca/cacert.pem -o node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem
+
+RUN bun run prisma
 
 COPY . .
-RUN pnpm build
 
-FROM node:24
-
-RUN yarn global add pnpm
-
-LABEL org.opencontainers.image.source=https://github.com/puff-social/discord-bot
-
-WORKDIR /app
-
-COPY --from=builder /app/node_modules node_modules
-COPY --from=builder /app/dist dist
-COPY --from=builder /app/generated generated
-COPY --from=builder /app/package.json ./
-
-ENTRYPOINT ["node", "dist/"]
+ENTRYPOINT ["bun", "run", "src"]

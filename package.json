@@ -10,8 +10,8 @@
     "fw-watch": "node dist/fw-watch",
     "dev:fw-watch": "ts-node-dev --exit-child --transpile-only -r dotenv/config src/fw-watch",
     "dev": "ts-node-dev --exit-child --transpile-only -r dotenv/config src",
-    "prisma": "(cd discord-db && prisma generate) && (cd db && prisma generate)",
-    "prisma:pull": "(cd discord-db && prisma db pull) && (cd db && prisma db pull)",
+    "prisma": "(cd discord-db && bunx prisma generate) && (cd db && bunx prisma generate)",
+    "prisma:pull": "(cd discord-db && bunx prisma db pull) && (cd db && bunx prisma db pull)",
     "postinstall": "cp -R node_modules/.pnpm/node_extra_ca_certs_mozilla_bundle*/node_modules/node_extra_ca_certs_mozilla_bundle node_modules/node_extra_ca_certs_mozilla_bundle 2>/dev/null || :"
   },
   "pnpm": {
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@prisma/client": "6.11.0",
-    "@puff-social/commons": "^1.0.44",
+    "@puff-social/commons": "^1.0.54",
     "aki-api": "^6.0.9",
     "discord.js": "^14.21.0",
     "envsafe": "^2.0.3",

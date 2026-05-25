@@ -1,0 +1,2 @@
+[install.scopes]
+puff-social = { url = "https://npm.pkg.github.com", username = "dustinrouillard", password = "$NPM_TOKEN" }
