@@ -8,6 +8,7 @@ COPY .npmrc.ci package*.json pnpm-lock.yaml ./
 COPY discord-db ./discord-db
 COPY db ./db
 
+COPY .npmrc.ci .npmrc
 RUN yarn global add pnpm
 RUN pnpm config set side-effects-cache false
 
