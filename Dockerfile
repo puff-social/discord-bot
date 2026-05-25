@@ -30,4 +30,4 @@ COPY --from=builder /app/dist dist
 COPY --from=builder /app/generated generated
 COPY --from=builder /app/package.json ./
 
-ENTRYPOINT pnpm start
+ENTRYPOINT ["node", "dist/"]
